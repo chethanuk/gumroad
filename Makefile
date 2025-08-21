@@ -1,5 +1,12 @@
 .PHONY: build_base build_base_test build build_nginx build_branch_app_nginx build_test build_staging build_production clean clean_local pull stop
 
+# Default dummy values for testing without secrets
+RAILS_MASTER_KEY ?= dummy_rails_master_key_for_testing_32b
+STRIPE_API_KEY ?= dummy_stripe_secret_key_test
+PAYPAL_USERNAME ?= dummy_paypal_username
+AWS_ACCESS_KEY_ID ?= dummy_aws_access_key
+TESTING_WITHOUT_SECRETS ?= true
+
 NEW_BASE_REPO ?= $(ECR_REGISTRY)/gumroad/web_base
 NEW_WEB_REPO ?= $(ECR_REGISTRY)/gumroad/web
 NEW_WEB_BASE_TEST_REPO ?= $(ECR_REGISTRY)/gumroad/web_base_test
@@ -87,7 +94,8 @@ build_test:
 		--shm-size="2g" \
 		--memory-swappiness="0" \
 		-e RAILS_ENV="test" \
-		-e RAILS_MASTER_KEY=$(RAILS_MASTER_KEY) \
+		-e RAILS_MASTER_KEY=$(shell if [ -z "$(RAILS_MASTER_KEY)" ]; then echo "dummy_rails_master_key_for_testing_32b"; else echo "$(RAILS_MASTER_KEY)"; fi) \
+		-e TESTING_WITHOUT_SECRETS=$(shell if [ -z "$(RAILS_MASTER_KEY)" ]; then echo "true"; else echo "false"; fi) \
 		-e BRANCH_CACHE_UPLOAD_ENABLED=$(BRANCH_CACHE_UPLOAD_ENABLED) \
 		-e BRANCH_CACHE_RESTORE_ENABLED=$(BRANCH_CACHE_RESTORE_ENABLED) \
 		-e CACHE_TAR_FILE=$(CACHE_TAR_FILE) \
@@ -211,3 +219,24 @@ stop:
 .PHONY: shortest
 shortest:
 	@./scripts/shortest.sh || true
+
+.PHONY: test_dummy test_with_secrets
+test_dummy:
+	@echo "Running tests with dummy secrets (no real API credentials required)"
+	@echo "This mode is suitable for external contributors and CI environments without secrets"
+	RAILS_MASTER_KEY=dummy_rails_master_key_for_testing_32b \
+	TESTING_WITHOUT_SECRETS=true \
+	STRIPE_API_KEY=dummy_stripe_secret_key_test \
+	PAYPAL_USERNAME=dummy_paypal_username \
+	AWS_ACCESS_KEY_ID=dummy_aws_access_key \
+	make build_test
+
+test_with_secrets:
+	@echo "Running tests with real secrets (requires actual API credentials)"
+	@echo "Ensure all required environment variables are set before running this target"
+	@if [ -z "$(RAILS_MASTER_KEY)" ] || [ "$(RAILS_MASTER_KEY)" = "dummy_rails_master_key_for_testing_32b" ]; then \
+		echo "Error: RAILS_MASTER_KEY must be set to a real value for this target"; \
+		exit 1; \
+	fi
+	TESTING_WITHOUT_SECRETS=false \
+	make build_test

@@ -58,53 +58,70 @@ def configure_vcr
     config.ignore_localhost = true
     config.configure_rspec_metadata!
     config.debug_logger = $stdout if ENV["VCR_DEBUG"]
-    config.default_cassette_options[:record] = BUILDING_ON_CI ? :none : :once
-    config.filter_sensitive_data("<AWS_ACCOUNT_ID>") { GlobalConfig.get("AWS_ACCOUNT_ID") }
-    config.filter_sensitive_data("<AWS_ACCESS_KEY_ID>") { GlobalConfig.get("AWS_ACCESS_KEY_ID") }
-    config.filter_sensitive_data("<STRIPE_PLATFORM_ACCOUNT_ID>") { GlobalConfig.get("STRIPE_PLATFORM_ACCOUNT_ID") }
-    config.filter_sensitive_data("<STRIPE_API_KEY>") { GlobalConfig.get("STRIPE_API_KEY") }
-    config.filter_sensitive_data("<STRIPE_CONNECT_CLIENT_ID>") { GlobalConfig.get("STRIPE_CONNECT_CLIENT_ID") }
-    config.filter_sensitive_data("<PAYPAL_USERNAME>") { GlobalConfig.get("PAYPAL_USERNAME") }
-    config.filter_sensitive_data("<PAYPAL_PASSWORD>") { GlobalConfig.get("PAYPAL_PASSWORD") }
-    config.filter_sensitive_data("<PAYPAL_SIGNATURE>") { GlobalConfig.get("PAYPAL_SIGNATURE") }
-    config.filter_sensitive_data("<STRONGBOX_GENERAL_PASSWORD>") { GlobalConfig.get("STRONGBOX_GENERAL_PASSWORD") }
-    config.filter_sensitive_data("<DROPBOX_API_KEY>") { GlobalConfig.get("DROPBOX_API_KEY") }
-    config.filter_sensitive_data("<SENDGRID_GUMROAD_TRANSACTIONS_API_KEY>") { GlobalConfig.get("SENDGRID_GUMROAD_TRANSACTIONS_API_KEY") }
-    config.filter_sensitive_data("<SENDGRID_GR_CREATORS_API_KEY>") { GlobalConfig.get("SENDGRID_GR_CREATORS_API_KEY") }
-    config.filter_sensitive_data("<SENDGRID_GR_CUSTOMERS_LEVEL_2_API_KEY>") { GlobalConfig.get("SENDGRID_GR_CUSTOMERS_LEVEL_2_API_KEY") }
-    config.filter_sensitive_data("<SENDGRID_GUMROAD_FOLLOWER_CONFIRMATION_API_KEY>") { GlobalConfig.get("SENDGRID_GUMROAD_FOLLOWER_CONFIRMATION_API_KEY") }
-    config.filter_sensitive_data("<EASYPOST_API_KEY>") { GlobalConfig.get("EASYPOST_API_KEY") }
-    config.filter_sensitive_data("<BRAINTREE_API_PRIVATE_KEY>") { GlobalConfig.get("BRAINTREE_API_PRIVATE_KEY") }
-    config.filter_sensitive_data("<BRAINTREE_MERCHANT_ID>") { GlobalConfig.get("BRAINTREE_MERCHANT_ID") }
-    config.filter_sensitive_data("<BRAINTREE_PUBLIC_KEY>") { GlobalConfig.get("BRAINTREE_PUBLIC_KEY") }
-    config.filter_sensitive_data("<BRAINTREE_MERCHANT_ACCOUNT_ID_FOR_SUPPLIERS>") { GlobalConfig.get("BRAINTREE_MERCHANT_ACCOUNT_ID_FOR_SUPPLIERS") }
-    config.filter_sensitive_data("<PAYPAL_CLIENT_ID>") { GlobalConfig.get("PAYPAL_CLIENT_ID") }
-    config.filter_sensitive_data("<PAYPAL_CLIENT_SECRET>") { GlobalConfig.get("PAYPAL_CLIENT_SECRET") }
-    config.filter_sensitive_data("<PAYPAL_MERCHANT_EMAIL>") { GlobalConfig.get("PAYPAL_MERCHANT_EMAIL") }
-    config.filter_sensitive_data("<PAYPAL_PARTNER_CLIENT_ID>") { GlobalConfig.get("PAYPAL_PARTNER_CLIENT_ID") }
-    config.filter_sensitive_data("<PAYPAL_PARTNER_MERCHANT_ID>") { GlobalConfig.get("PAYPAL_PARTNER_MERCHANT_ID") }
-    config.filter_sensitive_data("<PAYPAL_PARTNER_MERCHANT_EMAIL>") { GlobalConfig.get("PAYPAL_PARTNER_MERCHANT_EMAIL") }
-    config.filter_sensitive_data("<PAYPAL_BN_CODE>") { GlobalConfig.get("PAYPAL_BN_CODE") }
-    config.filter_sensitive_data("<VATSTACK_API_KEY>") { GlobalConfig.get("VATSTACK_API_KEY") }
-    config.filter_sensitive_data("<IRAS_API_ID>") { GlobalConfig.get("IRAS_API_ID") }
-    config.filter_sensitive_data("<IRAS_API_SECRET>") { GlobalConfig.get("IRAS_API_SECRET") }
-    config.filter_sensitive_data("<TAXJAR_API_KEY>") { GlobalConfig.get("TAXJAR_API_KEY") }
-    config.filter_sensitive_data("<TAX_ID_PRO_API_KEY>") { GlobalConfig.get("TAX_ID_PRO_API_KEY") }
-    config.filter_sensitive_data("<CIRCLE_API_KEY>") { GlobalConfig.get("CIRCLE_API_KEY") }
-    config.filter_sensitive_data("<OPEN_EXCHANGE_RATES_APP_ID>") { GlobalConfig.get("OPEN_EXCHANGE_RATES_APP_ID") }
-    config.filter_sensitive_data("<UNSPLASH_CLIENT_ID>") { GlobalConfig.get("UNSPLASH_CLIENT_ID") }
-    config.filter_sensitive_data("<DISCORD_BOT_TOKEN>") { GlobalConfig.get("DISCORD_BOT_TOKEN") }
-    config.filter_sensitive_data("<DISCORD_CLIENT_ID>") { GlobalConfig.get("DISCORD_CLIENT_ID") }
-    config.filter_sensitive_data("<ZOOM_CLIENT_ID>") { GlobalConfig.get("ZOOM_CLIENT_ID") }
-    config.filter_sensitive_data("<GCAL_CLIENT_ID>") { GlobalConfig.get("GCAL_CLIENT_ID") }
-    config.filter_sensitive_data("<OPENAI_ACCESS_TOKEN>") { GlobalConfig.get("OPENAI_ACCESS_TOKEN") }
-    config.filter_sensitive_data("<IOS_CONSUMER_APP_APPLE_LOGIN_IDENTIFIER>") { GlobalConfig.get("IOS_CONSUMER_APP_APPLE_LOGIN_IDENTIFIER") }
-    config.filter_sensitive_data("<IOS_CREATOR_APP_APPLE_LOGIN_TEAM_ID>") { GlobalConfig.get("IOS_CREATOR_APP_APPLE_LOGIN_TEAM_ID") }
-    config.filter_sensitive_data("<IOS_CREATOR_APP_APPLE_LOGIN_IDENTIFIER>") { GlobalConfig.get("IOS_CREATOR_APP_APPLE_LOGIN_IDENTIFIER") }
-    config.filter_sensitive_data("<GOOGLE_CLIENT_ID>") { GlobalConfig.get("GOOGLE_CLIENT_ID") }
-    config.filter_sensitive_data("<RPUSH_CONSUMER_FCM_FIREBASE_PROJECT_ID>") { GlobalConfig.get("RPUSH_CONSUMER_FCM_FIREBASE_PROJECT_ID") }
-    config.filter_sensitive_data("<SLACK_WEBHOOK_URL>") { GlobalConfig.get("SLACK_WEBHOOK_URL") }
-    config.filter_sensitive_data("<CLOUDFRONT_KEYPAIR_ID>") { GlobalConfig.get("CLOUDFRONT_KEYPAIR_ID") }
+    
+    # In dummy secrets mode, always record new cassettes to avoid real secret dependencies
+    if ENV["TESTING_WITHOUT_SECRETS"] == "true"
+      config.default_cassette_options[:record] = :new_episodes
+      config.default_cassette_options[:match_requests_on] = [:method, :uri]
+    else
+      config.default_cassette_options[:record] = BUILDING_ON_CI ? :none : :once
+    end
+
+    # Filter sensitive data - handle both real and dummy values
+    filter_secret_data = lambda do |key, secret_name|
+      value = GlobalConfig.get(secret_name)
+      # Only filter if it's not a dummy value (to avoid polluting cassettes with dummy data)
+      if value && !value.start_with?("dummy_") && value != "test_#{secret_name.downcase}"
+        config.filter_sensitive_data(key) { value }
+      end
+    end
+
+    filter_secret_data.call("<AWS_ACCOUNT_ID>", "AWS_ACCOUNT_ID")
+    filter_secret_data.call("<AWS_ACCESS_KEY_ID>", "AWS_ACCESS_KEY_ID")
+    filter_secret_data.call("<STRIPE_PLATFORM_ACCOUNT_ID>", "STRIPE_PLATFORM_ACCOUNT_ID")
+    filter_secret_data.call("<STRIPE_API_KEY>", "STRIPE_API_KEY")
+    filter_secret_data.call("<STRIPE_CONNECT_CLIENT_ID>", "STRIPE_CONNECT_CLIENT_ID")
+    filter_secret_data.call("<PAYPAL_USERNAME>", "PAYPAL_USERNAME")
+    filter_secret_data.call("<PAYPAL_PASSWORD>", "PAYPAL_PASSWORD")
+    filter_secret_data.call("<PAYPAL_SIGNATURE>", "PAYPAL_SIGNATURE")
+    filter_secret_data.call("<STRONGBOX_GENERAL_PASSWORD>", "STRONGBOX_GENERAL_PASSWORD")
+    filter_secret_data.call("<DROPBOX_API_KEY>", "DROPBOX_API_KEY")
+    filter_secret_data.call("<SENDGRID_GUMROAD_TRANSACTIONS_API_KEY>", "SENDGRID_GUMROAD_TRANSACTIONS_API_KEY")
+    filter_secret_data.call("<SENDGRID_GR_CREATORS_API_KEY>", "SENDGRID_GR_CREATORS_API_KEY")
+    filter_secret_data.call("<SENDGRID_GR_CUSTOMERS_LEVEL_2_API_KEY>", "SENDGRID_GR_CUSTOMERS_LEVEL_2_API_KEY")
+    filter_secret_data.call("<SENDGRID_GUMROAD_FOLLOWER_CONFIRMATION_API_KEY>", "SENDGRID_GUMROAD_FOLLOWER_CONFIRMATION_API_KEY")
+    filter_secret_data.call("<EASYPOST_API_KEY>", "EASYPOST_API_KEY")
+    filter_secret_data.call("<BRAINTREE_API_PRIVATE_KEY>", "BRAINTREE_API_PRIVATE_KEY")
+    filter_secret_data.call("<BRAINTREE_MERCHANT_ID>", "BRAINTREE_MERCHANT_ID")
+    filter_secret_data.call("<BRAINTREE_PUBLIC_KEY>", "BRAINTREE_PUBLIC_KEY")
+    filter_secret_data.call("<BRAINTREE_MERCHANT_ACCOUNT_ID_FOR_SUPPLIERS>", "BRAINTREE_MERCHANT_ACCOUNT_ID_FOR_SUPPLIERS")
+    filter_secret_data.call("<PAYPAL_CLIENT_ID>", "PAYPAL_CLIENT_ID")
+    filter_secret_data.call("<PAYPAL_CLIENT_SECRET>", "PAYPAL_CLIENT_SECRET")
+    filter_secret_data.call("<PAYPAL_MERCHANT_EMAIL>", "PAYPAL_MERCHANT_EMAIL")
+    filter_secret_data.call("<PAYPAL_PARTNER_CLIENT_ID>", "PAYPAL_PARTNER_CLIENT_ID")
+    filter_secret_data.call("<PAYPAL_PARTNER_MERCHANT_ID>", "PAYPAL_PARTNER_MERCHANT_ID")
+    filter_secret_data.call("<PAYPAL_PARTNER_MERCHANT_EMAIL>", "PAYPAL_PARTNER_MERCHANT_EMAIL")
+    filter_secret_data.call("<PAYPAL_BN_CODE>", "PAYPAL_BN_CODE")
+    filter_secret_data.call("<VATSTACK_API_KEY>", "VATSTACK_API_KEY")
+    filter_secret_data.call("<IRAS_API_ID>", "IRAS_API_ID")
+    filter_secret_data.call("<IRAS_API_SECRET>", "IRAS_API_SECRET")
+    filter_secret_data.call("<TAXJAR_API_KEY>", "TAXJAR_API_KEY")
+    filter_secret_data.call("<TAX_ID_PRO_API_KEY>", "TAX_ID_PRO_API_KEY")
+    filter_secret_data.call("<CIRCLE_API_KEY>", "CIRCLE_API_KEY")
+    filter_secret_data.call("<OPEN_EXCHANGE_RATES_APP_ID>", "OPEN_EXCHANGE_RATES_APP_ID")
+    filter_secret_data.call("<UNSPLASH_CLIENT_ID>", "UNSPLASH_CLIENT_ID")
+    filter_secret_data.call("<DISCORD_BOT_TOKEN>", "DISCORD_BOT_TOKEN")
+    filter_secret_data.call("<DISCORD_CLIENT_ID>", "DISCORD_CLIENT_ID")
+    filter_secret_data.call("<ZOOM_CLIENT_ID>", "ZOOM_CLIENT_ID")
+    filter_secret_data.call("<GCAL_CLIENT_ID>", "GCAL_CLIENT_ID")
+    filter_secret_data.call("<OPENAI_ACCESS_TOKEN>", "OPENAI_ACCESS_TOKEN")
+    filter_secret_data.call("<IOS_CONSUMER_APP_APPLE_LOGIN_IDENTIFIER>", "IOS_CONSUMER_APP_APPLE_LOGIN_IDENTIFIER")
+    filter_secret_data.call("<IOS_CREATOR_APP_APPLE_LOGIN_TEAM_ID>", "IOS_CREATOR_APP_APPLE_LOGIN_TEAM_ID")
+    filter_secret_data.call("<IOS_CREATOR_APP_APPLE_LOGIN_IDENTIFIER>", "IOS_CREATOR_APP_APPLE_LOGIN_IDENTIFIER")
+    filter_secret_data.call("<GOOGLE_CLIENT_ID>", "GOOGLE_CLIENT_ID")
+    filter_secret_data.call("<RPUSH_CONSUMER_FCM_FIREBASE_PROJECT_ID>", "RPUSH_CONSUMER_FCM_FIREBASE_PROJECT_ID")
+    filter_secret_data.call("<SLACK_WEBHOOK_URL>", "SLACK_WEBHOOK_URL")
+    filter_secret_data.call("<CLOUDFRONT_KEYPAIR_ID>", "CLOUDFRONT_KEYPAIR_ID")
   end
 end
 

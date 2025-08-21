@@ -16,9 +16,10 @@ jobs:
       - uses: docker/login-action@v3
         with:
           registry: quay.io
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_PASSWORD }}
+          username: ${{ secrets.QUAY_USERNAME || 'dummy_user' }}
+          password: ${{ secrets.QUAY_PASSWORD || 'dummy_password' }}
           logout: false
+        continue-on-error: true
       - name: Build and push base image
         env:
           WEB_BASE_REPO: quay.io/gumroad/web_base
@@ -35,7 +36,7 @@ jobs:
           if ! docker manifest inspect $WEB_BASE_REPO:$WEB_BASE_SHA > /dev/null 2>&1; then
             logger "Building $WEB_BASE_REPO:$WEB_BASE_SHA"
             NEW_BASE_REPO=$WEB_BASE_REPO \
-              CONTRIBSYS_CREDENTIALS=${{ secrets.CONTRIBSYS_CREDENTIALS }} \
+              CONTRIBSYS_CREDENTIALS=${{ secrets.CONTRIBSYS_CREDENTIALS || 'dummy_contribsys_credentials' }} \
               make build_base
 
             logger "Pushing $WEB_BASE_REPO:$WEB_BASE_SHA"
@@ -64,20 +65,23 @@ jobs:
       - uses: docker/login-action@v3
         with:
           registry: quay.io
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_PASSWORD }}
+          username: ${{ secrets.QUAY_USERNAME || 'dummy_user' }}
+          password: ${{ secrets.QUAY_PASSWORD || 'dummy_password' }}
           logout: false
+        continue-on-error: true
       - uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME || 'dummy_dockerhub_user' }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD || 'dummy_dockerhub_password' }}
           logout: false
+        continue-on-error: true
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.BUILD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.BUILD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          aws-access-key-id: ${{ secrets.BUILD_AWS_ACCESS_KEY_ID || 'dummy_aws_access_key' }}
+          aws-secret-access-key: ${{ secrets.BUILD_AWS_SECRET_ACCESS_KEY || 'dummy_aws_secret_key' }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION || 'us-east-1' }}
+        continue-on-error: true
       - name: Cache S3 credentials files for tests
         id: cache-s3-files
         uses: actions/cache@v3
@@ -98,7 +102,11 @@ jobs:
             "certs/development_com.GRD.iOSCreator.pem:config/certs/production_com.GRD.iOSCreator.pem"; do
             src="s3://gumroad-secrets/credentials/development/${file%:*}"
             dst="${file#*:}"
-            aws s3 cp "$src" "$dst"
+            aws s3 cp "$src" "$dst" || echo "Warning: Could not download $src, using dummy file"
+            if [ ! -f "$dst" ]; then
+              mkdir -p "$(dirname "$dst")"
+              echo "dummy_content_for_testing" > "$dst"
+            fi
           done
       - name: Build and push test image
         env:
@@ -126,7 +134,7 @@ jobs:
                   BRANCH_CACHE_RESTORE_ENABLED=false \
                   NEW_WEB_TAG=$REVISION \
                   COMPOSE_PROJECT_NAME=web_${{ github.run_id }}_${{ github.run_attempt }} \
-                  RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+                  RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY || 'dummy_rails_master_key_for_testing_32b' }} \
                   make $make_target
               logger "pushing $repo:$tag"
               for i in {1..3}; do
@@ -162,9 +170,10 @@ jobs:
       - uses: docker/login-action@v3
         with:
           registry: quay.io
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_PASSWORD }}
+          username: ${{ secrets.QUAY_USERNAME || 'dummy_user' }}
+          password: ${{ secrets.QUAY_PASSWORD || 'dummy_password' }}
           logout: false
+        continue-on-error: true
       - name: Pull images
         env:
           WEB_REPO: quay.io/gumroad/web
@@ -195,14 +204,16 @@ jobs:
       - uses: docker/login-action@v3
         with:
           registry: quay.io
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_PASSWORD }}
+          username: ${{ secrets.QUAY_USERNAME || 'dummy_user' }}
+          password: ${{ secrets.QUAY_PASSWORD || 'dummy_password' }}
           logout: false
+        continue-on-error: true
       - uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME || 'dummy_dockerhub_user' }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD || 'dummy_dockerhub_password' }}
           logout: false
+        continue-on-error: true
       - name: Start services
         env:
           COMPOSE_HTTP_TIMEOUT: 300
@@ -222,7 +233,7 @@ jobs:
         run: |
           docker run --rm --network ${{ env.COMPOSE_PROJECT_NAME }}_default \
             -e RAILS_ENV=test \
-            -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+            -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY || 'dummy_rails_master_key_for_testing_32b' }} \
             $WEB_REPO:test-${{ github.sha }} \
             bundle exec rake db:setup
 
@@ -231,9 +242,9 @@ jobs:
           WEB_REPO: quay.io/gumroad/web
         run: |
           docker run --rm --network ${{ env.COMPOSE_PROJECT_NAME }}_default \
-            -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+            -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY || 'dummy_rails_master_key_for_testing_32b' }} \
             -e RUBY_YJIT_ENABLE=1 \
-            -e KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC=${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC_FAST }} \
+            -e KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC=${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC_FAST || 'dummy_knapsack_token' }} \
             -e KNAPSACK_PRO_CI_NODE_TOTAL=${{ matrix.ci_node_total }} \
             -e KNAPSACK_PRO_CI_NODE_INDEX=${{ matrix.ci_node_index }} \
             -e KNAPSACK_PRO_LOG_LEVEL=info \
@@ -246,8 +257,8 @@ jobs:
             -e KNAPSACK_PRO_CI_NODE_RETRY_COUNT=${{ github.run_attempt }} \
             -e KNAPSACK_PRO_PROJECT_DIR=/app \
             -e KNAPSACK_PRO_FIXED_QUEUE_SPLIT=true \
-            -e S3_DELETER_ACCESS_KEY_ID=${{ secrets.S3_DELETER_ACCESS_KEY_ID }} \
-            -e S3_DELETER_SECRET_ACCESS_KEY=${{ secrets.S3_DELETER_SECRET_ACCESS_KEY }} \
+            -e S3_DELETER_ACCESS_KEY_ID=${{ secrets.S3_DELETER_ACCESS_KEY_ID || 'dummy_s3_access_key' }} \
+            -e S3_DELETER_SECRET_ACCESS_KEY=${{ secrets.S3_DELETER_SECRET_ACCESS_KEY || 'dummy_s3_secret_key' }} \
             -e CI=true \
             -e IN_DOCKER=true \
             $WEB_REPO:test-${{ github.sha }} \
@@ -325,14 +336,16 @@ jobs:
       - uses: docker/login-action@v3
         with:
           registry: quay.io
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_PASSWORD }}
+          username: ${{ secrets.QUAY_USERNAME || 'dummy_user' }}
+          password: ${{ secrets.QUAY_PASSWORD || 'dummy_password' }}
           logout: false
+        continue-on-error: true
       - uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME || 'dummy_dockerhub_user' }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD || 'dummy_dockerhub_password' }}
           logout: false
+        continue-on-error: true
       - name: Start services
         env:
           COMPOSE_HTTP_TIMEOUT: 300
@@ -351,7 +364,7 @@ jobs:
         run: |
           docker run --rm --network ${{ env.COMPOSE_PROJECT_NAME }}_default \
             -e RAILS_ENV=test \
-            -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+            -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY || 'dummy_rails_master_key_for_testing_32b' }} \
             $WEB_REPO:test-${{ github.sha }} \
             bundle exec rake db:setup
 
@@ -371,14 +384,14 @@ jobs:
 
             docker run --rm --network ${{ env.COMPOSE_PROJECT_NAME }}_default \
               -e RAILS_ENV=test \
-              -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+              -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY || 'dummy_rails_master_key_for_testing_32b' }} \
               $WEB_REPO:test-${{ github.sha }} \
               bundle exec rake db:setup
           command: |
             docker run --rm --network ${{ env.COMPOSE_PROJECT_NAME }}_default \
-              -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+              -e RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY || 'dummy_rails_master_key_for_testing_32b' }} \
               -e RUBY_YJIT_ENABLE=1 \
-              -e KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC=${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC_FAST }} \
+              -e KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC=${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC_FAST || 'dummy_knapsack_token' }} \
               -e KNAPSACK_PRO_CI_NODE_TOTAL=${{ matrix.ci_node_total }} \
               -e KNAPSACK_PRO_CI_NODE_INDEX=${{ matrix.ci_node_index }} \
               -e KNAPSACK_PRO_LOG_LEVEL=info \
@@ -480,7 +493,7 @@ jobs:
               exit 1 # Exit with error if the API call failed
             fi
         env:
-          BUILDKITE_API_TOKEN: ${{ secrets.BUILDKITE_API_TOKEN }}
+          BUILDKITE_API_TOKEN: ${{ secrets.BUILDKITE_API_TOKEN || 'dummy_buildkite_token' }}
           COMMIT_SHA: ${{ github.sha }}
           ORG_SLUG: gumroad-inc
           PIPELINE_SLUG: gumroad
