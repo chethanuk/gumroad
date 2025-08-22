@@ -44,8 +44,7 @@ class GlobalConfig
       # @param name [String] The name of the environment variable
       # @return [Boolean] true if dummy value should be used
       def should_use_dummy_value?(name)
-        return false unless ENV["TESTING_WITHOUT_SECRETS"] == "true"
-        
+        # use dummy values in test mode for known secrets
         DUMMY_VALUE_SECRETS.include?(name)
       end
 
@@ -103,6 +102,7 @@ class GlobalConfig
         GOOGLE_CLIENT_ID
         OPENAI_ACCESS_TOKEN
         CLOUDFRONT_KEYPAIR_ID
+        CLOUDFRONT_PRIVATE_KEY
         SLACK_WEBHOOK_URL
         STRONGBOX_GENERAL_PASSWORD
       ].freeze
@@ -123,6 +123,8 @@ class GlobalConfig
         "AWS_ACCESS_KEY_ID" => "dummy_aws_access_key",
         "AWS_SECRET_ACCESS_KEY" => "dummy_aws_secret_key",
         "AWS_ACCOUNT_ID" => "123456789012",
+        "CLOUDFRONT_KEYPAIR_ID" => "dummy_cloudfront_keypair",
+        "CLOUDFRONT_PRIVATE_KEY" => "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCsNEmGDkuZvlGF\nO7hZ7gA1BGL4q7LMTcSXR9lrw18amP6DKdlcXlzvugCn/R746V6b4kwSWmmi6bA7\nfQTcANHaxS3wFXmvnuLeqlpthxZjQDSBEQI0emXQTAjcFv26hsVh4G4Xt+eKs4hU\nb433TDXZdefIlnFonHFPsijLlrMAvmIq/NhV8m5I5ZUqB3Qp04DGVioPiuq+ZlVR\n0kLphW3Kas2npNay7mr4VNLAwqZJVJIYhWEoGo/uvwlCGohQB/VRRqsGFehe70KY\ndRdmX9KudqdY3L0PE8e490VOxI1xi1L0w7aeCcrSU52dk0Xewjjq/6X6zP+ziDet\n3fI8GjYnAgMBAAECggEAQ94zn+7gYs58SHs58892K274JrNcu2Jm+YxqpysPv2bO\n4BjNPrc9/4kaGxsKauVm0R8GBjG18mwRddCW6rI0Avm1WirMk6eWGFWhYAteim1S\nhA+VA+O9XrOoxj0VcL8O6b1PBnAHhEWvlD+G/xD9JCBw4kBQn/8QNW2s4FgbYk4A\nuMTFio7Mie5LG4G8P+9UxAY21CHh9UdTny2Ml9lElLKkiBtV2KFadiZLoAt7etCV\nZxidwgcVb5kDIocnOuPixMaXJ9QPCMzFYEECyAr8c5S8QtkBLOsNWZaMfb9ILI6Q\nLIrwQjSqzqnlqH4V2WfQtN5yDJ++eSNdumjf6P0yQQKBgQDaPaa2HEkkniUtG1qt\negCalNw1MFJkqY1RmS3wF3wNrwinRFgHi+QSWb+6YKjVOHabwTLCtBmAwJ0ICJzs\n/uxWpyKYpb75Yw27wAOujcpojRfes1bLRBdDrKzK3TWL/WNY7/fJCnN+Jh5IYfoD\ni1d8z+BKpbTAxBDaBkQQk2zwBwKBgQDJ/5QOgiEvLTnjrvZwimwuWCQG0+9EpSn2\nILgb266GGPPxiH+lGVnTBP+qB3FeRRHGzzrc6HQ8AKAcAnM7X+eE7Z+oLpy9jrWg\nryDy7ics/didk3ZN3ro+9aoSh7j9q1C8F3ViWbm2bGRjh/A3wWgJrNt5jSfBkWtO\nGJquXnrA4QKBgH5BUGLmdkIi42r2+jyF6jeDiumSbPgjRshAD91oGLJp4l2yIiMr\ngORE27BdHw9LPQLagB03x9E+nRn6sZ5B1ERFKLSanqLz9Qv7B6ZCDSjzBy4lHj81\nwye5i7VIyCOWkZTwLq81xp7iOn6xf8vxHsnsENvehXVHeGBJY7MbNtidAoGAQkU8\nUMo2kuC2llEnfuKa/VVjdG4BmLbLHnm7jUA0cMAtADf1ELhRdN619hV9Bx2H6H7C\nZAlLYQgffzD6lycusLi44ZdxSutQAUiTeb/SUHtznrbrYD7LQa6dPnkSov6afSsB\nEuQ2/ndvNAw8Lj6goFP6qVU7DtFjr/p4fO54PWECgYEAjsO1UDW+e1GQmbPZiCaN\nZmWyvZET/YtneiRCOH3yKlvX3b1OyfSLf/vMelwF6JNHxZaTSPzAMaG204PdxHIO\n/P/T+nxJUZWnts2IEBiD2qe1Mmq493UThGLhFhAdut62AcT5jQOAVrApR0xG8Ec/\ns9R6Rv3EUEBptWGJKrepPQY=\n-----END PRIVATE KEY-----",
         "SLACK_WEBHOOK_URL" => "https://hooks.slack.com/dummy/webhook/url",
         "STRONGBOX_GENERAL_PASSWORD" => "dummy_password"
       }.freeze

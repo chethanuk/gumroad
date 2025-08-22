@@ -41,6 +41,17 @@ if CDN_S3_PROXY_HOST && PUBLIC_STORAGE_CDN_S3_PROXY_HOST
     CDN_URL_MAP.merge!("https://s3.amazonaws.com/gumroad/" => "#{CDN_S3_PROXY_HOST}/res/gumroad/",
                        "https://s3.amazonaws.com/gumroad-staging/" => "#{CDN_S3_PROXY_HOST}/res/gumroad-staging/",
                        "https://s3.amazonaws.com/gumroad_dev/" => "#{CDN_S3_PROXY_HOST}/res/gumroad_dev/",
+                       "https://gumroad-specs.s3.amazonaws.com/" => "#{CDN_S3_PROXY_HOST}/res/gumroad-specs/",
                        "https://gumroad-dev-public-storage.s3.amazonaws.com/" => "#{PUBLIC_STORAGE_CDN_S3_PROXY_HOST}/")
+  end
+  
+  # Add LocalStack URL mappings for testing
+  if Rails.env.test? && ENV['LOCALSTACK_ENDPOINT'].present?
+    localstack_endpoint = ENV['LOCALSTACK_ENDPOINT']
+    CDN_URL_MAP.merge!(
+      "#{localstack_endpoint}/gumroad/" => "https://asset.host.example.com/res/gumroad/",
+      "#{localstack_endpoint}/gumroad-staging/" => "https://asset.host.example.com/res/gumroad-staging/",
+      "#{localstack_endpoint}/gumroad-specs/" => "https://asset.host.example.com/res/gumroad-specs/"
+    )
   end
 end

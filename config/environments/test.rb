@@ -40,7 +40,10 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "#{PROTOCOL}://#{ASSET_DOMAIN}"
 
-  config.active_storage.service = :amazon
+  # Use LocalStack for S3 if available, otherwise regular amazon config
+  # LocalStack is used when LOCALSTACK_ENDPOINT is set or AWS credentials start with 'dummy'
+  use_localstack = ENV["LOCALSTACK_ENDPOINT"].present? || ENV['AWS_ACCESS_KEY_ID']&.start_with?('dummy')
+  config.active_storage.service = use_localstack ? :amazon_test : :amazon
 
   config.action_mailer.perform_caching = true
 
@@ -69,4 +72,24 @@ Rails.application.configure do
   config.active_job.queue_adapter = :test
 
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Configure AWS to use LocalStack when dummy credentials are used
+  config.after_initialize do
+    if ENV['AWS_ACCESS_KEY_ID']&.start_with?('dummy') && ENV['LOCALSTACK_ENDPOINT'].present?
+      Aws.config.update(
+        region: 'us-east-1',
+        credentials: Aws::Credentials.new(
+          ENV['AWS_ACCESS_KEY_ID'] || 'dummy_aws_localstack_access_key',
+          ENV['AWS_SECRET_ACCESS_KEY'] || 'dummy_aws_localstack_secret_key'
+        ),
+        endpoint: ENV['LOCALSTACK_ENDPOINT'],
+        force_path_style: true,
+        s3: {
+          endpoint: ENV['LOCALSTACK_ENDPOINT'],
+          force_path_style: true
+        }
+      )
+      Rails.logger.info "🪣 AWS configured for LocalStack at #{ENV['LOCALSTACK_ENDPOINT']}"
+    end
+  end
 end

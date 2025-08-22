@@ -229,6 +229,7 @@ test_dummy:
 	STRIPE_API_KEY=dummy_stripe_secret_key_test \
 	PAYPAL_USERNAME=dummy_paypal_username \
 	AWS_ACCESS_KEY_ID=dummy_aws_access_key \
+	LOCALSTACK_ENDPOINT=http://localstack:4566 \
 	make build_test
 
 test_with_secrets:

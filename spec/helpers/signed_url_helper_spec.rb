@@ -59,8 +59,15 @@ describe SignedUrlHelper do
   end
 
   it "raises a descriptive exception if the S3 object doesn't exist" do
-    RSpec::Mocks.space.proxy_for(Aws::S3::Client).reset
-    RSpec::Mocks.space.proxy_for(Aws::S3::Resource).reset
+    # Mock S3 to return NotFound error for missing objects
+    s3_resource_double = double
+    s3_bucket_double = double
+    s3_object_double = double
+    
+    allow(Aws::S3::Resource).to receive(:new).and_return(s3_resource_double)
+    allow(s3_resource_double).to receive(:bucket).with(S3_BUCKET).and_return(s3_bucket_double)
+    allow(s3_bucket_double).to receive(:object).with("attachments/missing.txt").and_return(s3_object_double)
+    allow(s3_object_double).to receive(:content_length).and_raise(Aws::S3::Errors::NotFound.new(nil, "NoSuchKey"))
 
     expect do
       signed_download_url_for_s3_key_and_filename("attachments/missing.txt", "filename")

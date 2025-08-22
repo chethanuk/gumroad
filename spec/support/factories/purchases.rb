@@ -139,7 +139,25 @@ FactoryBot.define do
     factory :purchase_in_progress do
       purchase_state { "in_progress" }
       factory :purchase_with_balance do
-        after(:create, &:update_balance_and_mark_successful!)
+        after(:create) do |purchase|
+          # Ensure purchase has a merchant account (required for balance transactions)
+          if purchase.merchant_account.nil?
+            # Set the charge processor if not set
+            purchase.charge_processor_id ||= StripeChargeProcessor.charge_processor_id
+            
+            # Ensure Gumroad merchant accounts exist for dummy mode
+            if ENV['STRIPE_API_KEY']&.start_with?('dummy_')
+              MerchantAccountTestHelper.ensure_gumroad_merchant_accounts!
+            end
+            
+            # Set the merchant account using the same logic as production
+            purchase.merchant_account = purchase.seller&.merchant_account(purchase.charge_processor_id) || 
+                                       MerchantAccount.gumroad(purchase.charge_processor_id)
+            purchase.save! if purchase.merchant_account
+          end
+          
+          purchase.update_balance_and_mark_successful!
+        end
       end
     end
 

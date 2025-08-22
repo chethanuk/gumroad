@@ -60,7 +60,7 @@ def configure_vcr
     config.debug_logger = $stdout if ENV["VCR_DEBUG"]
     
     # In dummy secrets mode, always record new cassettes to avoid real secret dependencies
-    if ENV["TESTING_WITHOUT_SECRETS"] == "true"
+    if ENV['STRIPE_API_KEY']&.start_with?('dummy_')
       config.default_cassette_options[:record] = :new_episodes
       config.default_cassette_options[:match_requests_on] = [:method, :uri]
     else
@@ -162,6 +162,9 @@ RSpec.configure do |config|
       Thread.new { prepare_mysql },
       Thread.new { ElasticsearchSetup.prepare_test_environment }
     ].each(&:join)
+    
+    # Ensure Gumroad merchant accounts exist when testing with dummy secrets
+    MerchantAccountTestHelper.ensure_gumroad_merchant_accounts!
   end
 
   config.before(:suite) do
