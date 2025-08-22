@@ -3,6 +3,9 @@
 require "spec_helper"
 
 describe PaypalChargeRefund, :vcr do
+  before(:all) do
+    skip "Skipping PayPal VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+  end
   let(:paypal_api) { PayPal::SDK::Merchant::API.new }
 
   let(:pre_prepared_paypal_charge_id) do

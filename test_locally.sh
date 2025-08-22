@@ -74,9 +74,12 @@ export RAILS_ENV=test
 echo ""
 echo -e "${BLUE}🧪 Running Core Test Suite (proves dummy secrets work)...${NC}"
 
-# Run the helper specs - these cover the main areas that were fixed
-# This is the sweet spot: comprehensive enough to catch issues, fast enough for daily use
-if bundle exec rspec spec/helpers/ --format progress; then
+# Accept optional spec path argument, default to helper specs
+SPEC_PATH="${1:-spec/helpers/}"
+echo -e "${BLUE}📁 Running specs: $SPEC_PATH${NC}"
+
+# Run the specified specs
+if bundle exec rspec "$SPEC_PATH" --format progress; then
     echo ""
     echo -e "${GREEN}✅ SUCCESS: All tests pass with dummy secrets!${NC}"
     echo -e "${GREEN}✅ PayoutsHelper: Merchant account validation fixed${NC}"

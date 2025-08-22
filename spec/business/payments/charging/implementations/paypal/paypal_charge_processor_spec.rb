@@ -11,6 +11,10 @@ require "spec_helper"
 #    Manually setup the desired scenario.
 
 describe PaypalChargeProcessor, :vcr do
+  before(:all) do
+    skip "Skipping PayPal VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+  end
+
   let(:paypal_auth_token) do
     "Bearer A21AAI9v6NTs3Y42Ufo-5Q-cskFZtTLkOodRO1uJQvdaWnsbiCt078vvzYnSy5X1gLFwGZIyhtT6D_EUZyyyp_YjB9CudeK7w"
   end

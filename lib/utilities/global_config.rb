@@ -129,4 +129,10 @@ class GlobalConfig
         "STRONGBOX_GENERAL_PASSWORD" => "dummy_password"
       }.freeze
   end
+
+  # Simple helper to check if a credential is a dummy value
+  def self.using_dummy?(key)
+    value = get(key)
+    value.present? && value.start_with?('dummy_')
+  end
 end

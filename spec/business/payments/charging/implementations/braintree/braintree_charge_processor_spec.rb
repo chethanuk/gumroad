@@ -3,6 +3,9 @@
 require "spec_helper"
 
 describe BraintreeChargeProcessor, :vcr do
+  before(:all) do
+    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_API_PRIVATE_KEY")
+  end
   describe ".charge_processor_id" do
     it "returns 'stripe'" do
       expect(BraintreeChargeProcessor.charge_processor_id).to eq "braintree"

@@ -3,6 +3,9 @@
 require "spec_helper"
 
 describe BraintreeCharge, :vcr do
+  before(:all) do
+    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_API_PRIVATE_KEY")
+  end
   describe "charge without fingerprint or card details" do
     before do
       chargeable_element = BraintreeChargeableNonce.new(Braintree::Test::Nonce::PayPalFuturePayment, nil)

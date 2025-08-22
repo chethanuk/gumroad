@@ -4,6 +4,9 @@ require "spec_helper"
 require "business/payments/charging/charge_shared_examples"
 
 describe StripeCharge, :vcr do
+  before(:all) do
+    skip "Skipping Stripe VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+  end
   include StripeMerchantAccountHelper
   include StripeChargesHelper
 

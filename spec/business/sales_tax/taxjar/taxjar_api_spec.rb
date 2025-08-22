@@ -3,6 +3,9 @@
 require "spec_helper"
 
 describe TaxjarApi, :vcr do
+  before(:all) do
+    skip "Skipping TaxJar VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("TAXJAR_API_KEY")
+  end
   let(:origin) do
     {
       country: "US",
