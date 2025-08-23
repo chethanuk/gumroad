@@ -69,6 +69,17 @@ export BRAINTREE_API_PRIVATE_KEY=dummy_braintree_private_key
 export BRAINTREE_MERCHANT_ID=dummy_braintree_merchant
 export BRAINTREE_PUBLIC_KEY=dummy_braintree_public_key
 export BRAINTREE_MERCHANT_ACCOUNT_ID_FOR_SUPPLIERS=dummy_braintree_supplier_account
+export OPENAI_ACCESS_TOKEN=dummy_openai_token
+export TAXJAR_API_KEY=dummy_taxjar_api_key  
+export EASYPOST_API_KEY=dummy_easypost_api_key
+export DROPBOX_API_KEY=dummy_dropbox_api_key
+export CIRCLE_API_KEY=dummy_circle_api_key
+export DISCORD_CLIENT_SECRET=dummy_discord_client_secret
+export SENDGRID_API_KEY=dummy_sendgrid_api_key
+export VATSTACK_API_KEY=dummy_vatstack_api_key
+export TAX_ID_PRO_API_KEY=dummy_tax_id_pro_api_key
+export IRAS_API_ID=dummy_iras_api_id
+export IRAS_API_SECRET=dummy_iras_api_secret
 export RAILS_ENV=test
 
 echo ""

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 describe BraintreeChargeableTransientCustomer, :vcr do
+  before(:all) do
+    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_API_PRIVATE_KEY")
+  end
   let(:transient_customer_store_key) { "transient-customer-token-key" }
 
   describe "tokenize_nonce_to_transient_customer" do

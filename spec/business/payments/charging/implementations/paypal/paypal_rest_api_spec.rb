@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 describe PaypalRestApi, :vcr do
+  before(:all) do
+    skip "Skipping PayPal VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+  end
   let(:api_object) { PaypalRestApi.new }
   let(:paypal_auth_token) { "Bearer A21AAI6Qq9kon0Z2N7R6ed3OXwkNxFraroKppGHWHJUU5w-MlQBKKcZd_WlHbQJgh79HLaWQmEnRyj3GZdRW9FMqRbbSkcmBA" }
 

@@ -3,6 +3,9 @@
 require "spec_helper"
 
 describe Ai::ProductDetailsGeneratorService, :vcr do
+  before(:all) do
+    skip "Skipping OpenAI VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("OPENAI_ACCESS_TOKEN")
+  end
   let(:current_seller) { create(:user) }
   let(:service) { described_class.new(current_seller:) }
 

@@ -36,6 +36,7 @@ RSpec.describe CommunityChatRecapGeneratorService do
       end
 
       it "generates a summary from chat messages" do
+        skip "Skipping OpenAI VCR test when using dummy credentials" if GlobalConfig.using_dummy?("OPENAI_ACCESS_TOKEN")
         VCR.use_cassette("community_chat_recap_generator/daily_summary") do
           described_class.new(community_chat_recap: community_chat_recap).process
         end
@@ -75,6 +76,7 @@ RSpec.describe CommunityChatRecapGeneratorService do
       let(:weekly_recap) { create(:community_chat_recap, community:, community_chat_recap_run: weekly_recap_run) }
 
       it "generates a weekly summary from daily recaps" do
+        skip "Skipping OpenAI VCR test when using dummy credentials" if GlobalConfig.using_dummy?("OPENAI_ACCESS_TOKEN")
         VCR.use_cassette("community_chat_recap_generator/weekly_summary") do
           described_class.new(community_chat_recap: weekly_recap).process
         end

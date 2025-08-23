@@ -29,6 +29,7 @@ describe PaypalPayoutProcessor do
       end
 
       it "returns true if creator has a paypal account connected", :vcr do
+        skip "Skipping PayPal VCR test when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
         create(:merchant_account_paypal, user:, charge_processor_merchant_id: "B66YJBBNCRW6L")
         expect(described_class.is_user_payable(user, 10_01)).to eq(true)
       end
@@ -164,6 +165,7 @@ describe PaypalPayoutProcessor do
     end
 
     it "returns true if the user has a PayPal account connected", :vcr do
+      skip "Skipping PayPal VCR test when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
       user.update!(payment_address: "")
       expect(user.reload.has_valid_payout_info?).to eq false
 

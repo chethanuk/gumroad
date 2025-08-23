@@ -11,6 +11,9 @@ describe DropboxFile do
   end
 
   describe "#multipart_transfer_to_s3", :vcr do
+    before do
+      skip "Skipping Dropbox VCR test when using dummy credentials" if GlobalConfig.using_dummy?("DROPBOX_API_KEY")
+    end
     let(:dropbox_file_info) do
       file = HTTParty.post("https://api.dropboxapi.com/2/files/get_temporary_link",
                            headers: {
