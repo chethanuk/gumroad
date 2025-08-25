@@ -4,6 +4,9 @@ describe StripeEventHandler do
   let(:event_id) { "evt_eventid" }
 
   describe "error handling", :vcr do
+    before do
+      skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+    end
     context "when staging environment" do
       before do
         allow(Rails.env).to receive(:staging?).and_return(true)
@@ -136,6 +139,9 @@ describe StripeEventHandler do
   describe "an event on a connected account" do
     describe "an account event", :vcr do
       before do
+        skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+      end
+      before do
         @user = create(:user)
         @merchant_account = create(:merchant_account_stripe, user: @user)
         @stripe_event = {
@@ -186,6 +192,9 @@ describe StripeEventHandler do
     end
 
     describe "a payout event", :vcr do
+      before do
+        skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+      end
       let(:stripe_event) do
         {
           "id" => event_id,
@@ -212,6 +221,9 @@ describe StripeEventHandler do
     end
 
     describe "account deauthorized", :vcr do
+      before do
+        skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+      end
       before do
         @user = create(:user)
         @product = create(:product, user: @user)
@@ -268,6 +280,9 @@ describe StripeEventHandler do
     end
 
     describe "a capability event", :vcr do
+      before do
+        skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+      end
       before do
         @user = create(:user)
         @merchant_account = create(:merchant_account_stripe, user: @user)

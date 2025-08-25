@@ -4,9 +4,6 @@ require "spec_helper"
 require "shared_examples/sellers_base_controller_concern"
 
 describe Integrations::CircleController, :vcr do
-  before(:all) do
-    skip "Skipping Circle API VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("CIRCLE_API_KEY")
-  end
 
   it_behaves_like "inherits from Sellers::BaseController"
 

@@ -3,6 +3,9 @@
 require "spec_helper"
 
 describe StripeMerchantAccountManager, :vcr do
+  before do
+    skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+  end
   API_VERSION = Stripe.api_version
 
   let(:user) { create(:user, unpaid_balance_cents: 10, email: "chuck@gum.com", username: "chuck") }

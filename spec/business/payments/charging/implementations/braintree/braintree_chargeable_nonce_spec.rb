@@ -4,7 +4,7 @@ require "spec_helper"
 
 describe BraintreeChargeableNonce, :vcr do
   before(:all) do
-    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_API_PRIVATE_KEY")
+    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_PRIVATE_KEY")
   end
   describe "#prepare!" do
     it "throws a validation failure on using an invalid chargeable" do

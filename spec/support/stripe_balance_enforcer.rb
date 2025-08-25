@@ -23,6 +23,9 @@ class StripeBalanceEnforcer
   private_class_method :new
 
   def ensure_sufficient_balance
+    # Skip balance check when using dummy credentials
+    return if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+    
     top_up! if insufficient_balance?
   end
 

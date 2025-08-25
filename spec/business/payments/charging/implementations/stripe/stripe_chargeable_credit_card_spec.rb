@@ -5,9 +5,6 @@ require "business/payments/charging/chargeable_protocol"
 require "business/payments/charging/implementations/stripe/stripe_chargeable_common_shared_examples"
 
 describe StripeChargeableCreditCard, :vcr do
-  before(:all) do
-    skip "Skipping Stripe VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
-  end
   let(:user) { create(:user) }
   let(:original_chargeable) { build(:chargeable) }
   let(:original_chargeable_reusable_token) do

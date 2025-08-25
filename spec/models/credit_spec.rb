@@ -266,6 +266,9 @@ describe Credit do
   end
 
   describe "create_for_refund_fee_retention!", :vcr do
+    before do
+      skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+    end
     let!(:creator) { create(:user) }
     let!(:merchant_account) { create(:merchant_account_stripe, user: creator) }
     let!(:purchase) { create(:purchase, succeeded_at: 3.days.ago, link: create(:product, user: creator), merchant_account:) }

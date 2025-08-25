@@ -3,9 +3,6 @@
 require "spec_helper"
 
 describe StripeChargeIntent, :vcr do
-  before(:all) do
-    skip "Skipping Stripe VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
-  end
   include StripeChargesHelper
 
   let(:processor_payment_intent) do

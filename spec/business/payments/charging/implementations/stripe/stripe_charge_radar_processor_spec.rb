@@ -3,9 +3,6 @@
 require "spec_helper"
 
 describe StripeChargeRadarProcessor, :vcr do
-  before(:all) do
-    skip "Skipping Stripe VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
-  end
   describe "#handle_event" do
     let(:purchase) { create(:purchase) }
 

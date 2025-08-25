@@ -57,6 +57,7 @@ export SIDEKIQ_REDIS_HOST="localhost:$REDIS_PORT/11"
 export RPUSH_REDIS_HOST="localhost:$REDIS_PORT/12"
 export RACK_ATTACK_REDIS_HOST="localhost:$REDIS_PORT/13"
 export MONGO_DATABASE_URL="localhost:$MONGO_PORT"
+export MONGO_DATABASE_NAME=gumroad_log_test
 export ELASTICSEARCH_HOST="http://localhost:$ELASTICSEARCH_PORT"
 export MEMCACHE_SERVERS="localhost:$MEMCACHE_PORT"
 export LOCALSTACK_ENDPOINT="http://localhost:$LOCALSTACK_PORT"
@@ -80,6 +81,9 @@ export VATSTACK_API_KEY=dummy_vatstack_api_key
 export TAX_ID_PRO_API_KEY=dummy_tax_id_pro_api_key
 export IRAS_API_ID=dummy_iras_api_id
 export IRAS_API_SECRET=dummy_iras_api_secret
+export IFFY_TOKEN=dummy_iffy_token_for_admin_access
+export SECURE_EXTERNAL_ID__PRIMARY_KEY_VERSION=1
+export SECURE_EXTERNAL_ID__KEYS__1=dummy32byteencryptionkeyfortest1
 export RAILS_ENV=test
 
 echo ""

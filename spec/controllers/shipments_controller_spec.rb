@@ -4,9 +4,6 @@ require "spec_helper"
 require "shared_examples/authorize_called"
 
 describe ShipmentsController, :vcr  do
-  before(:all) do
-    skip "Skipping EasyPost VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("EASYPOST_API_KEY")
-  end
   describe "POST verify_shipping_address" do
     describe "US address" do
       before do

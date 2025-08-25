@@ -665,6 +665,7 @@ describe SettingsPresenter do
       end
 
       it "returns correct props when seller has a bank account and a PayPal Connect account", :vcr do
+        skip "Skipping PayPal Connect test when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_PARTNER_CLIENT_ID")
         active_bank_account = create(:ach_account, user: seller)
         seller.mark_compliant!(author_name: "Iffy")
         allow_any_instance_of(User).to receive(:sales_cents_total).and_return(100_00)
