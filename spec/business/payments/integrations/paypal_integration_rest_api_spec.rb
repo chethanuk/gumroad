@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe PaypalIntegrationRestApi, :vcr do
   before do
     @creator = create(:user, email: "sb-oy4cl2265599@business.example.com")

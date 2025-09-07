@@ -4,6 +4,31 @@ require "spec_helper"
 
 describe Discover::TaxonomyPresenter do
   subject(:presenter) { Discover::TaxonomyPresenter.new }
+  
+  before(:each) do
+    # Clear cache to ensure tests work correctly
+    Rails.cache.clear
+    
+    # Create test taxonomies with stats
+    @education = Taxonomy.find_or_create_by!(slug: "education")
+    @three_d = Taxonomy.find_or_create_by!(slug: "3d")  
+    @other = Taxonomy.find_or_create_by!(slug: "other")
+    
+    # Create taxonomy stats for each parent taxonomy
+    TaxonomyStat.find_or_create_by!(taxonomy: @education)
+    TaxonomyStat.find_or_create_by!(taxonomy: @three_d)
+    TaxonomyStat.find_or_create_by!(taxonomy: @other)
+    
+    # Create child taxonomies with parent relationships
+    @math = Taxonomy.find_or_create_by!(slug: "math", parent: @education)
+    @history = Taxonomy.find_or_create_by!(slug: "history", parent: @education)
+    @assets_3d = Taxonomy.find_or_create_by!(slug: "3d-assets", parent: @three_d)
+    
+    # Create stats for child taxonomies
+    TaxonomyStat.find_or_create_by!(taxonomy: @math)
+    TaxonomyStat.find_or_create_by!(taxonomy: @history)
+    TaxonomyStat.find_or_create_by!(taxonomy: @assets_3d)
+  end
 
   describe "#taxonomies_for_nav" do
     it "converts the taxonomy into a list of categories, with keys as strings" do

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe("Email Creation Flow", :js, type: :system) do
@@ -783,8 +784,6 @@ describe("Email Creation Flow", :js, type: :system) do
       wait_for_ajax
       expect(page).to have_alert(text: "Please set at least one channel for your update.")
       expect(Installment.count).to eq(0)
-
-
       # Creates the email and sends a preview email if "Send email" is checked
       check "Send email"
       expect(page).to_not have_disclosure("Preview")

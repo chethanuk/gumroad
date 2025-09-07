@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe PerformDailyInstantPayoutsWorker do
   describe "perform" do
     let(:payout_period_end_date) { Date.yesterday }

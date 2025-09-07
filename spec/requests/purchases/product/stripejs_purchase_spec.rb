@@ -1,6 +1,6 @@
+
 # frozen_string_literal: true
 
-require("spec_helper")
 require "timeout"
 
 describe("PurchaseScenario using StripeJs", type: :system, js: true) do

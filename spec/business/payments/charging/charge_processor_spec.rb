@@ -9,7 +9,6 @@ describe ChargeProcessor do
       ChargeProcessor.get_chargeable_for_params({ param: "param" }, nil)
     end
   end
-
   describe ".get_chargeable_for_data", :vcr do
     it "calls get_chargeable_for_data on the correct charge processor" do
       expect_any_instance_of(StripeChargeProcessor).to receive(:get_chargeable_for_data).with(

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe PublishScheduledPostJob, :freeze_time do
   before do
     @post = create(:audience_installment, shown_on_profile: true, send_emails: true)

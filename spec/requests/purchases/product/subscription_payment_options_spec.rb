@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Purchasing a multi-recurrence subscription product from product page", type: :system, js: true) do
   before do
     @product = create(:subscription_product_with_versions, price_cents: 10_00)

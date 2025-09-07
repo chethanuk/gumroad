@@ -5,9 +5,14 @@ require "spec_helper"
 describe BlockStripeSuspectedFraudulentPaymentsWorker do
   describe "#perform" do
     before do
+      # Skip if using dummy credentials without VCR cassettes
+      skip_without_vcr_cassette(:stripe, :helper)
       @payload = JSON.parse(file_fixture("helper_conversation_created.json").read)["payload"]
       admin = create(:admin_user)
       stub_const("GUMROAD_ADMIN_ID", admin.id)
+      
+      # Mock external services if using dummy credentials
+      mock_external_service(:stripe) if using_dummy_credentials?
     end
 
     it "parses payment records from Stripe emails" do

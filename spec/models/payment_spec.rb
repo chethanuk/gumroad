@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe Payment do
+  before { mock_payment_providers if using_dummy_credentials? }
   describe "mark" do
     it "sets the appropriate state" do
       payment = create(:payment)

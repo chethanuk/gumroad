@@ -5,16 +5,53 @@ AWS_ACCESS_KEY = GlobalConfig.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_KEY = GlobalConfig.get("AWS_SECRET_ACCESS_KEY")
 AWS_DEFAULT_REGION = GlobalConfig.get("AWS_DEFAULT_REGION", "us-east-1")
 
-Aws.config.update(
-  region: AWS_DEFAULT_REGION,
-  credentials: Aws::Credentials.new(AWS_ACCESS_KEY, AWS_SECRET_KEY)
-)
+# Configure AWS with LocalStack support for test environment
+if Rails.env.test? && ENV['LOCALSTACK_ENDPOINT'].present?
+  Aws.config.update(
+    region: AWS_DEFAULT_REGION,
+    credentials: Aws::Credentials.new(AWS_ACCESS_KEY, AWS_SECRET_KEY),
+    endpoint: ENV['LOCALSTACK_ENDPOINT'],
+    # Note: force_path_style is only valid for S3, not for other services like SQS
+    s3: {
+      endpoint: ENV['LOCALSTACK_ENDPOINT'],
+      force_path_style: true
+    },
+    sqs: {
+      endpoint: ENV['LOCALSTACK_ENDPOINT']
+    },
+    sns: {
+      endpoint: ENV['LOCALSTACK_ENDPOINT']
+    },
+    mediaconvert: {
+      endpoint: ENV['LOCALSTACK_ENDPOINT']
+    },
+    elastictranscoder: {
+      endpoint: ENV['LOCALSTACK_ENDPOINT']
+    }
+  )
+else
+  Aws.config.update(
+    region: AWS_DEFAULT_REGION,
+    credentials: Aws::Credentials.new(AWS_ACCESS_KEY, AWS_SECRET_KEY)
+  )
+end
 
 INVOICES_S3_BUCKET = GlobalConfig.get("INVOICES_S3_BUCKET", "gumroad-invoices")
 S3_CREDENTIALS = { access_key_id: AWS_ACCESS_KEY, secret_access_key: AWS_SECRET_KEY, s3_region: AWS_DEFAULT_REGION }.freeze
 CLOUDFRONT_KEYPAIR_ID = GlobalConfig.get("CLOUDFRONT_KEYPAIR_ID")
 CLOUDFRONT_PRIVATE_KEY = GlobalConfig.get("CLOUDFRONT_PRIVATE_KEY").then do |key|
-  OpenSSL::PKey::RSA.new(key) if key.present?
+  if Rails.env.test? && (key.nil? || key == "dummy_cloudfront_private_key" || key.start_with?("dummy_"))
+    # Generate a valid RSA key dynamically for testing
+    # This avoids hardcoding keys in the repository
+    require 'openssl'
+    OpenSSL::PKey::RSA.new(2048)
+  elsif key.present?
+    # Handle keys with escaped newlines for real keys
+    actual_key = key.gsub('\n', "\n")
+    OpenSSL::PKey::RSA.new(actual_key)
+  else
+    nil
+  end
 end
 
 SECURITY_LOG_BUCKETS = { production: "gumroad-logs-security", staging: "gumroad-logs-security-staging" }.freeze

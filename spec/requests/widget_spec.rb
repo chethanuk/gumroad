@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe "Widget Page scenario", js: true, type: :system do

@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Multiple quantity purchases from product page", type: :system, js: true) do
   describe "multiple quantities" do
     before do

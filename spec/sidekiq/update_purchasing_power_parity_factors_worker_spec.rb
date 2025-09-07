@@ -5,6 +5,8 @@ require "spec_helper"
 describe UpdatePurchasingPowerParityFactorsWorker, :vcr do
   describe "#perform" do
     before do
+      # Skip if using dummy credentials without VCR cassettes
+      skip_without_vcr_cassette(:purchasing_power_parity)
       @seller = create(:user)
       @worker = described_class.new
       @service = PurchasingPowerParityService.new

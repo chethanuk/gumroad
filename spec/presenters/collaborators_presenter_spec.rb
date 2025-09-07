@@ -12,8 +12,6 @@ describe CollaboratorsPresenter do
     let!(:confirmed_collaborator) { create(:collaborator, seller:, products: [product_1]) }
     let!(:pending_collaborator) { create(:collaborator, :with_pending_invitation, seller:, products: [product_2]) }
 
-
-
     it "returns the seller's live collaborators" do
       props = described_class.new(seller:).index_props
 

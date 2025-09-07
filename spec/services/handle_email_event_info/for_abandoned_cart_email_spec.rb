@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe HandleEmailEventInfo::ForAbandonedCartEmail do
   let!(:abandoned_cart_workflow1) { create(:abandoned_cart_workflow) }
   let(:abandoned_cart_workflow_installment1) { abandoned_cart_workflow1.alive_installments.sole }

@@ -1,7 +1,4 @@
 # frozen_string_literal: true
-
-require "spec_helper"
-
 describe PayoutEstimates do
   describe "estimate_held_amount_cents" do
     let(:payout_date) { Date.today - 1 }

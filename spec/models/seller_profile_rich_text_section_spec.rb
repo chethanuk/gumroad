@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe SellerProfileRichTextSection do
+  before { ensure_test_infrastructure! }
   describe "validations" do
     it "validates json_data with the correct schema" do
       section = build(:seller_profile_rich_text_section)

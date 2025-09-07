@@ -3,6 +3,27 @@
 require "spec_helper"
 
 describe CreatorAnalytics::CachingProxy do
+  
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   describe "#data_for_dates" do
     before do
       @user = create(:user, timezone: "London", created_at: Time.utc(2019, 1, 1))

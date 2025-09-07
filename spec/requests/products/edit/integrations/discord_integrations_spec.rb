@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe("Product Edit Integrations edit - Discord", type: :system, js: true) do
@@ -291,8 +292,6 @@ describe("Product Edit Integrations edit - Discord", type: :system, js: true) do
         visit edit_link_path(@product)
         expect(page).to_not have_button "Disconnect Discord"
       end
-
-
       context "integration for product with multiple versions" do
         before do
           @version_category = create(:variant_category, link: @product)

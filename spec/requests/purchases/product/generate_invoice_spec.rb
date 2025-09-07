@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Generate invoice for purchase", type: :system, js: true) do
   context "when purchasing from a product page" do
     before do

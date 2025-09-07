@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe NamibiaBankAccount do
   describe "#bank_account_type" do
     it "returns NA" do

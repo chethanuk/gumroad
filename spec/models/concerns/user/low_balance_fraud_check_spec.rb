@@ -18,8 +18,6 @@ describe User::LowBalanceFraudCheck do
 
       expect(@creator.reload.refunds_disabled?).to eq(false)
     end
-
-
     it "is called when a creator is marked as compliant" do
       @creator.mark_compliant!(author_name: "test")
 

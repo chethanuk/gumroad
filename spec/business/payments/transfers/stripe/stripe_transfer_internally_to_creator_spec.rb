@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe StripeTransferInternallyToCreator, :vcr do
   include StripeMerchantAccountHelper
   include StripeChargesHelper

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 describe DeleteStripeApplePayDomainWorker, :vcr do
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     before do
       @user = create(:user)
       @domain = "sampleusername.gumroad.dev"

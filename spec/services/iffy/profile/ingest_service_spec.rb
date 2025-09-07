@@ -3,6 +3,11 @@
 require "spec_helper"
 
 describe Iffy::Profile::IngestService do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   include Rails.application.routes.url_helpers
 
   let(:user) { create(:user, name: "Test User", bio: "A test user bio.") }

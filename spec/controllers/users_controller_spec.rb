@@ -1,9 +1,31 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe UsersController do
+  
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   render_views
 
   let(:creator) { create(:user, username: "creator") }
@@ -195,8 +217,6 @@ describe UsersController do
         it "assigns the correct user based on the host" do
           expect(assigns(:user)).to eq(@user)
         end
-
-
         it "renders the show template" do
           expect(response).to render_template(:show)
         end

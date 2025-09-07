@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe HealthcheckController do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   describe "GET 'index'" do
     it "returns 'healthcheck' as text" do
       get :index

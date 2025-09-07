@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe RpushFcmAppService do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   let!(:app_name) { Device::APP_TYPES[:consumer] }
 
   describe "#first_or_create!" do

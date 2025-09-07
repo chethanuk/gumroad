@@ -4,7 +4,10 @@ require "spec_helper"
 
 describe HandleSnsTranscoderEventWorker do
   describe "#perform" do
+    ensure_test_infrastructure!
     before do
+      # Skip if using dummy AWS credentials without LocalStack
+      skip_without_localstack
       @product = create(:product)
       @product.product_files << create(:product_file, link: @product,
                                                       url: "https://s3.amazonaws.com/gumroad-specs/files/43a5363194e74e9ee75b6203eaea6705/original/test.mp4",

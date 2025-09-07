@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 include CurrencyHelper

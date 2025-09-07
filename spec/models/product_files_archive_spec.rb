@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe ProductFilesArchive do
+  before { ensure_test_infrastructure! }
   describe "callbacks" do
     it "saves `digest` when transitioning to the 'in_progress' state" do
       product = create(:product_with_files)

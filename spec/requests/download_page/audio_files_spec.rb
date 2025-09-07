@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Download Page Audio files", type: :system, js: true) do
   before do
     @url_redirect = create(:listenable_url_redirect)

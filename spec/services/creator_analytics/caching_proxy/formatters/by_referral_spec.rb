@@ -80,8 +80,6 @@ describe CreatorAnalytics::CachingProxy::Formatters::ByReferral do
           { date: "Tuesday, January 5th", month: "January 2021", month_index: 0 },
         ]
       }
-
-
       expect(@service.merge_data_by_referral([day_one, day_two_and_three, day_four_and_five], @dates)).to equal_with_indifferent_access(
         by_referral: {
           views: {

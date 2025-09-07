@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe "Product page wishlist selector", js: true, type: :system do
   let(:user) { create(:user) }
   let(:product) { create(:product, user:) }

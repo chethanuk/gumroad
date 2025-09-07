@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 RSpec.describe Feature do
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }

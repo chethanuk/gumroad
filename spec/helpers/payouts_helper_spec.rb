@@ -50,8 +50,6 @@ describe PayoutsHelper do
     it "returns the proper sales amount for the current payout period given sales that span 2 payout periods" do
       @user = create(:singaporean_user_with_compliance_info, payment_address: "balance@gumroad.com")
       link = create(:product, user: @user, price_cents: 20_00)
-
-
       (0..1).each do |days_count|
         travel_to(Date.parse("2013-09-7") - days_count.days) do
           create(:purchase_with_balance, link:)
@@ -145,8 +143,6 @@ describe PayoutsHelper do
         payment.update!(processor_fee_cents: 10, txn_id: "test")
         payment.mark_completed!
       end
-
-
       travel_to(Date.parse("2013-08-25")) do
         payment = Payment.last
         payout_period_data = helper.payout_period_data(@user, payment)

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe PaypalPartnerRestCredentials do
   describe "#auth_token" do
     context "when a cached token is present" do

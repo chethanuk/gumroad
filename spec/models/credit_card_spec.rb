@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe CreditCard do
+  before { mock_payment_providers if using_dummy_credentials? }
   describe "after creating a credit card", :vcr do
     let(:chargeable) { build(:chargeable) }
 

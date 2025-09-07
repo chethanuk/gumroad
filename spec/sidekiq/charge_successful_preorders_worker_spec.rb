@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe ChargeSuccessfulPreordersWorker do
   describe "#perform" do
     before do

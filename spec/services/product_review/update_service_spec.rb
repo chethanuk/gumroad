@@ -3,6 +3,8 @@
 require "spec_helper"
 
 RSpec.describe ProductReview::UpdateService do
+  # Removed DummyCredentialHelper conditional skip
+
   let(:purchaser) { create(:user) }
   let(:purchase) { create(:purchase, purchaser:) }
   let(:product_review) do

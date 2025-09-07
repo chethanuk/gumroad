@@ -3,6 +3,8 @@
 require "spec_helper"
 
 RSpec.describe VideoFile::HasThumbnail do
+  # Removed DummyCredentialHelper conditional skip
+
   subject(:video_file) { build(:video_file) }
 
   let(:jpg_image) { fixture_file_upload("test.jpg") }

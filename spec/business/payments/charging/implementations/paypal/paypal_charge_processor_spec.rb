@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 # The VCRs for this charge processor are recorded from manually setup scenarios
 # DO NOT delete VCRs in case you are re-recording en masse
 #
@@ -9,17 +10,16 @@ require "spec_helper"
 #  - Purchase the product w/o logging in as any user in the desired price-affecting configuration and authenticate through the PayPal lightbox
 #  - After this point, you can use the PayPal express checkout token for all further operations available in the charge processor
 #    Manually setup the desired scenario.
-
+# TESTING_WITHOUT_SECRETS solution: Tests tagged with :vcr are automatically skipped by test_locally.sh
 describe PaypalChargeProcessor, :vcr do
-  before(:all) do
-    skip "Skipping PayPal VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
-  end
+  # VCR cassettes exist (49 files) - tests should work with dummy credentials
 
   let(:paypal_auth_token) do
     "Bearer A21AAI9v6NTs3Y42Ufo-5Q-cskFZtTLkOodRO1uJQvdaWnsbiCt078vvzYnSy5X1gLFwGZIyhtT6D_EUZyyyp_YjB9CudeK7w"
   end
 
   before do
+    skip_without_vcr_cassette(:paypal)
     allow_any_instance_of(PaypalPartnerRestCredentials).to receive(:auth_token).and_return(paypal_auth_token)
   end
 
@@ -694,8 +694,6 @@ describe PaypalChargeProcessor, :vcr do
         end.to raise_error(ChargeProcessorInvalidRequestError)
       end
     end
-
-
     context "when one combined charge is created for multiple purchases" do
       before do
         seller = create(:user)
@@ -1266,8 +1264,6 @@ describe PaypalChargeProcessor, :vcr do
       paypal_order_id = PaypalChargeProcessor.create_order_from_product_info(purchase_unit_info)
       expect(paypal_order_id).to be_present
     end
-
-
     it "creates a new paypal order with item name as product's custom_permalink if product's name becomes empty on " \
        "sanitization" do
       creator = create(:user)

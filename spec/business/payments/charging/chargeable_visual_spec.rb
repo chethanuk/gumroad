@@ -6,7 +6,6 @@ describe ChargeableVisual do
   describe "is_cc_visual" do
     describe "visual is a credit card" do
       let(:visual) { "**** **** **** 4242" }
-
       it "returns true" do
         expect(described_class.is_cc_visual(visual)).to eq(true)
       end

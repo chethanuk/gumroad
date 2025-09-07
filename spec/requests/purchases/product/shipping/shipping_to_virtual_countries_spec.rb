@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe("Product Page - Shipping to Virtual Countries", type: :system, js: true, shipping: true) do
   it "does not show the blurb if there is shipping, but no tax" do
     @product = create(:product, user: create(:user), require_shipping: true, price_cents: 100_00)

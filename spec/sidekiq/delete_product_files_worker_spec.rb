@@ -3,6 +3,30 @@
 require "spec_helper"
 
 describe DeleteProductFilesWorker do
+  
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   before do
     stub_const("PUBLIC_STORAGE_CDN_S3_PROXY_HOST", "https://#{PUBLIC_STORAGE_S3_BUCKET}.s3.amazonaws.com")
 
@@ -18,6 +42,7 @@ describe DeleteProductFilesWorker do
   end
 
   describe "#perform" do
+    ensure_test_infrastructure!
     it "deletes product files" do
       freeze_time do
         described_class.new.perform(@product.id)

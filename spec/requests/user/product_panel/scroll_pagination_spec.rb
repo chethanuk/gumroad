@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product panel on creator profile - infinite scroll pagination", type: :system, js: true) do
   before do
     @creator = create(:named_user)

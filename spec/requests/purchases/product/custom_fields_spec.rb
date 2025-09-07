@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product checkout - custom fields", type: :system, js: true) do
   before do
     @product = create(:product)

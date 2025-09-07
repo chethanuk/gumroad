@@ -1,8 +1,11 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product Page - Tax Scenarios", type: :system, js: true) do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   describe "sales tax", shipping: true do
     before do
       @creator = create(:user_with_compliance_info)
@@ -1395,8 +1398,6 @@ describe("Product Page - Tax Scenarios", type: :system, js: true) do
         visit "/l/#{@product.unique_permalink}"
         expect(page).to have_text("$100")
         add_to_cart(@product)
-
-
         expect(page).to have_text("VAT US$10", normalize_ws: true)
         expect(page).to have_text("Total US$110", normalize_ws: true)
 

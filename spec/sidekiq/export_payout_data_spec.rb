@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 describe ExportPayoutData do
   describe "#perform" do
+    ensure_test_infrastructure!
     let(:seller) { create(:named_seller) }
 
     let(:payment1) { create(:payment, user: seller, created_at: Time.zone.now) }

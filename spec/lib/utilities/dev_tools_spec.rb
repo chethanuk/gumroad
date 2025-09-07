@@ -3,6 +3,18 @@
 require "spec_helper"
 
 describe DevTools do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   # Very basic tests just to guard for basic runtime errors (method not found, etc).
   describe ".reindex_all_for_user" do
     it "succeeds after indexing at least one record" do

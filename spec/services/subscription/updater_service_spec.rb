@@ -2600,8 +2600,6 @@ describe Subscription::UpdaterService, :vcr do
               result = service.perform
               expect(result[:success]).to eq true
             end.to_not have_enqueued_mail(CustomerLowPriorityMailer, :subscription_giftee_added_card)
-
-
             @subscription.reload
             expect(@subscription.gift?).to eq true
             expect(@subscription.original_purchase).to_not eq @original_purchase

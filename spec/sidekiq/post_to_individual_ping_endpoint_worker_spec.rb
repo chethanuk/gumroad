@@ -3,6 +3,16 @@
 require "spec_helper"
 
 describe PostToIndividualPingEndpointWorker do
+  
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   before do
     @http_double = double
     allow(@http_double).to receive(:success?).and_return(true)

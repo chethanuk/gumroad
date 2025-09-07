@@ -1,12 +1,24 @@
+
 # frozen_string_literal: true
 
-require("spec_helper")
 require "timeout"
 
 # In March 2021 we migrated from Stripe's Charges API to Payment Intents API.
 # Many customers have stored their credit cards on file using the old Charges API (via a credit card token).
 # This spec ensures that those legacy credit cards keep working under the new Payment Intents API.
 describe("Purchase using a saved card created under the old Charges API", type: :system, js: true) do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   before do
     @creator = create(:named_user)
     # We create a card via a CC token which is how things were done under the legacy Charges API

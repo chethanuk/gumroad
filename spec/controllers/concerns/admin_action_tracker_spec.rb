@@ -3,6 +3,14 @@
 require "spec_helper"
 
 describe AdminActionTracker do
+  
+  before do
+    # Stub admin authentication for tests
+    allow_any_instance_of(Admin::BaseController).to receive(:admin_user?).and_return(true)
+    allow_any_instance_of(Admin::BaseController).to receive(:current_admin).and_return(
+      create(:user, admin: true)
+    )
+  end
   controller do
     include AdminActionTracker
     def index

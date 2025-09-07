@@ -1,9 +1,21 @@
 # frozen_string_literal: true
-
-describe BraintreeChargeableTransientCustomer, :vcr do
-  before(:all) do
-    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_API_PRIVATE_KEY")
+describe BraintreeChargeableTransientCustomer, :vcr, :braintree do
+  before do
+    # Skip if using dummy credentials
+    if ENV['TESTING_WITHOUT_SECRETS'] == 'true'
+      skip "Braintree tests require real API credentials (VCR cassettes incompatible with dummy credentials)"
+    end
+    
+    # Ensure Redis is available with proper URL format
+    begin
+      redis_url = ENV['REDIS_HOST'] ? "redis://#{ENV['REDIS_HOST']}" : "redis://localhost:6379/0"
+      Redis.new(url: redis_url).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
   end
+  # VCR cassettes exist - tests will use recorded responses
+  # Available: 3 cassettes in spec/support/fixtures/vcr_cassettes/BraintreeChargeableTransientCustomer/
   let(:transient_customer_store_key) { "transient-customer-token-key" }
 
   describe "tokenize_nonce_to_transient_customer" do

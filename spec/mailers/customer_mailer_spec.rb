@@ -172,8 +172,6 @@ describe CustomerMailer do
       before do
         purchase.create_url_redirect!
       end
-
-
       it "has the right subject for a recurring subscription purchase" do
         expect(mail.subject).to match(/^Recurring charge for /)
       end

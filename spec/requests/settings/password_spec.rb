@@ -100,8 +100,6 @@ describe("Password Settings Scenario", type: :system, js: true) do
 
     it "doesn't allow changing the password with a value that was found in the password breaches" do
       visit settings_password_path
-
-
       within("form") do
         fill_in("Old password", with: user.password)
         fill_in("New password", with: compromised_password)
@@ -121,8 +119,6 @@ describe("Password Settings Scenario", type: :system, js: true) do
 
     it "allows changing the password with a value that was not found in the password breaches" do
       visit settings_password_path
-
-
       within("form") do
         fill_in("Old password", with: user.password)
         fill_in("New password", with: not_compromised_password)

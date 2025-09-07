@@ -4,7 +4,6 @@ require "spec_helper"
 
 describe PaypalChargeIntent do
   let(:paypal_charge) { double }
-
   subject (:paypal_charge_intent) { described_class.new(charge: paypal_charge) }
 
   describe "#succeeded?" do
@@ -20,7 +19,7 @@ describe PaypalChargeIntent do
   end
 
   describe "#charge" do
-    it "returns the charge object it was initialized with" do
+    it "returns the charge object it was initialized with" , :paypal_vcr , :paypal_vcr do
       expect(paypal_charge_intent.charge).to eq(paypal_charge)
     end
   end

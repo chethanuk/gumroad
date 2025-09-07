@@ -34,8 +34,6 @@ describe ProductPresenter::ProductProps do
           allow(request).to receive(:cookie_jar).and_return({ _gumroad_guid: purchase.browser_guid })
         end
         let(:pundit_user) { SellerContext.new(user: buyer, seller: buyer) }
-
-
         it "returns properties for the product page" do
           product.save_custom_attributes(
             [

@@ -4,6 +4,7 @@ require "spec_helper"
 
 describe SetSubscriptionAsDeactivatedWorker do
   describe "#perform" do
+    mock_external_service(:taxjar)
     it "sets subscription as deactivated" do
       product = create(:membership_product)
       purchase = create(:membership_purchase, link: product)

@@ -3,6 +3,18 @@
 require "spec_helper"
 
 describe PurchaseSearchService do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   describe "#process" do
     it "can filter by seller" do
       purchase_1 = create(:purchase)

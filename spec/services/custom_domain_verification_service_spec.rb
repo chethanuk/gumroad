@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe CustomDomainVerificationService do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   let(:domain) { "example.com" }
   subject(:service) { described_class.new(domain:) }
 

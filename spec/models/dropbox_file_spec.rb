@@ -3,6 +3,17 @@
 require "spec_helper"
 
 describe DropboxFile do
+  
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
+  before { ensure_test_infrastructure! }
   describe "validations" do
     it "does not allow you to create a dropbox file without a dropbox url" do
       dropbox_file = DropboxFile.new(dropbox_url: nil)

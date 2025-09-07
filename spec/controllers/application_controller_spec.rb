@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe ApplicationController do
@@ -501,8 +502,6 @@ describe ApplicationController do
       get :index
       expect($bugsnag_event.user).to eq(id: "127.0.0.1")
     end
-
-
     it "adds user info when logged in" do
       user = create(:user, username: "joe", name: "Joe", email: "joe@example.com")
 

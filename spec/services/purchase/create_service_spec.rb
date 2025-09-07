@@ -3271,8 +3271,6 @@ describe Purchase::CreateService, :vcr do
 
       it "creates a purchase with a tip" do
         purchase, _ = Purchase::CreateService.new(product:, params:).perform
-
-
         expect(purchase).to be_successful
         expect(purchase.price_cents).to eq 700
         expect(purchase.tip.value_cents).to eq 100

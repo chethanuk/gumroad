@@ -1,6 +1,6 @@
+
 # frozen_string_literal: true
 
-require("spec_helper")
 require "timeout"
 
 describe("Gift purchases from the product page", type: :system, js: true) do

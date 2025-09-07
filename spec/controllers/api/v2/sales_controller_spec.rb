@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorized_oauth_v1_api_method"
 
 describe Api::V2::SalesController do
@@ -401,8 +402,6 @@ describe Api::V2::SalesController do
           @purchase.reload
           expect(@purchase.refunded?).to be_truthy
           expect(@purchase.refunds.last.refunding_user_id).to eq @product.user.id
-
-
           expect(response.parsed_body["sale"]["refunded"]).to eq true
           expect(response.parsed_body["sale"]["partially_refunded"]).to eq false
           expect(response.parsed_body["sale"]["amount_refundable_in_currency"]).to eq "0"
@@ -424,8 +423,6 @@ describe Api::V2::SalesController do
           @purchase.reload
           expect(@purchase.refunded?).to be_falsey
           expect(@purchase.stripe_partially_refunded?).to be_truthy
-
-
           expect(response.parsed_body["sale"]["refunded"]).to eq false
           expect(response.parsed_body["sale"]["partially_refunded"]).to eq true
           expect(response.parsed_body["sale"]["amount_refundable_in_currency"]).to eq "49.50"
@@ -445,8 +442,6 @@ describe Api::V2::SalesController do
           @purchase.reload
           expect(@purchase.refunded?).to be_truthy
           expect(@purchase.stripe_partially_refunded?).to be_falsey
-
-
           expect(response.parsed_body["sale"]["refunded"]).to eq true
           expect(response.parsed_body["sale"]["partially_refunded"]).to eq false
           expect(response.parsed_body["sale"]["amount_refundable_in_currency"]).to eq "0"
@@ -476,8 +471,6 @@ describe Api::V2::SalesController do
           expect(@purchase.amount_refundable_cents).to eq 20_00
 
           put :refund, params: @params.merge(amount_cents: 40_00)
-
-
           expect(response.parsed_body).to eq({
             success: false,
             message: "Refund amount cannot be greater than the purchase price."
@@ -495,8 +488,6 @@ describe Api::V2::SalesController do
           @purchase.reload
           expect(@purchase.refunded?).to be_falsey
           expect(@purchase.stripe_partially_refunded?).to be_falsey
-
-
           expect(response.parsed_body).to eq({
             success: false,
             message: "The sale was unable to be modified."
@@ -512,8 +503,6 @@ describe Api::V2::SalesController do
           @purchase.reload
           expect(@purchase.refunded?).to be_falsey
           expect(@purchase.stripe_partially_refunded?).to be_falsey
-
-
           expect(response.parsed_body).to eq({
             success: false,
             message: "Refund amount cannot be greater than the purchase price."

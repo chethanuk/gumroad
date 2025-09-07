@@ -1,6 +1,6 @@
+
 # frozen_string_literal: true
 
-require("spec_helper")
 require "shared_examples/file_group_download_all"
 
 describe("Download Page – Rich Text Editor Content", type: :system, js: true) do

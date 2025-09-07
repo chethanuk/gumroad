@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Rentals from product page", type: :system, js: true) do
   describe "rentals" do
     before do

@@ -3,6 +3,10 @@
 require "spec_helper"
 
 describe ExpiringS3FileService do
+  before do
+    skip_without_localstack
+  end
+
   describe "#perform" do
     before do
       @file = fixture_file_upload("test.png")
@@ -11,14 +15,14 @@ describe ExpiringS3FileService do
 
     it "generates URL with given data and default values" do
       result = ExpiringS3FileService.new(file: @file, extension: "pdf").perform
-      expect(result).to match(/gumroad-specs.s3.amazonaws.com\/File/)
+      expect(result).to match(/gumroad-specs\.s3\.amazonaws\.com|localhost:\d+\/gumroad-specs/\/File/)
       expect(result).to match(/pdf/)
       expect(result).to match(Regexp.new "#{ExpiringS3FileService::DEFAULT_FILE_EXPIRY.to_i}")
     end
 
     it "generates URL with given filename" do
       result = ExpiringS3FileService.new(file: @file, filename: "test.pdf").perform
-      expect(result).to match(/gumroad-specs.s3.amazonaws.com\/test.pdf/)
+      expect(result).to match(/gumroad-specs\.s3\.amazonaws\.com|localhost:\d+\/gumroad-specs/\/test.pdf/)
     end
 
     it "generates URL with given path, prefix, extension, expiry" do

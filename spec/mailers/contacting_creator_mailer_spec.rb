@@ -3,6 +3,10 @@
 require "spec_helper"
 
 describe ContactingCreatorMailer do
+  before do
+    skip_if_using_dummy_credentials(:sendgrid)
+  end
+
   let(:custom_mailer_route_helper) do
     Class.new(ActionMailer::Base) do
       include CustomMailerRouteBuilder
@@ -782,8 +786,6 @@ describe ContactingCreatorMailer do
         expect(mail.body.encoded).to include "via Staff picks in <a href=\"#{UrlService.discover_domain_with_protocol}\" target=\"_blank\">Discover</a>"
       end
     end
-
-
     context "when the purchase is via more like this" do
       before do
         purchase.update!(was_product_recommended: true, recommended_by: RecommendationType::GUMROAD_MORE_LIKE_THIS_RECOMMENDATION, referrer: "gumroad.com")
@@ -1828,8 +1830,6 @@ describe ContactingCreatorMailer do
           value: "Post purchase custom field value"
         )
       end
-
-
       it "includes the correct information" do
         mail = ContactingCreatorMailer.upcoming_call_reminder(call.id)
 

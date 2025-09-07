@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe BahrainBankAccount do
   describe "#bank_account_type" do
     it "returns BH" do

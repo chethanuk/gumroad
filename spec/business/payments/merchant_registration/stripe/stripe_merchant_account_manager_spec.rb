@@ -3,9 +3,8 @@
 require "spec_helper"
 
 describe StripeMerchantAccountManager, :vcr do
-  before do
-    skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
-  end
+  before { mock_payment_providers if using_dummy_credentials? }
+  # VCR cassettes exist for these tests - no need to skip with dummy credentials
   API_VERSION = Stripe.api_version
 
   let(:user) { create(:user, unpaid_balance_cents: 10, email: "chuck@gum.com", username: "chuck") }
@@ -5378,8 +5377,6 @@ describe StripeMerchantAccountManager, :vcr do
         expect(bank_account.reload.stripe_fingerprint).to match(/[a-zA-Z0-9]+/)
       end
     end
-
-
     describe "all info provided of an PE individual" do
       let(:user_compliance_info) do create(:user_compliance_info, user:, city: "Lima",
                                                                   street_address: "address_full_match", state: nil, zip_code: "15074",
@@ -9141,8 +9138,6 @@ describe StripeMerchantAccountManager, :vcr do
           expect { described_class.handle_stripe_event(stripe_event) }.to raise_error("No Merchant Account for Stripe Account ID stripe-account-id")
         end
       end
-
-
       describe "for a standard stripe connect account" do
         let(:stripe_event) do
           {

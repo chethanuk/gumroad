@@ -3,9 +3,8 @@
 require "spec_helper"
 
 describe TaxjarApi, :vcr do
-  before(:all) do
-    skip "Skipping TaxJar VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("TAXJAR_API_KEY")
-  end
+  # VCR cassettes exist - tests will use recorded responses
+  # Available: 2 cassettes in spec/support/fixtures/vcr_cassettes/TaxjarApi/
   let(:origin) do
     {
       country: "US",

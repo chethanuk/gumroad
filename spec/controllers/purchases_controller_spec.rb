@@ -1,12 +1,25 @@
 # frozen_string_literal: false
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 require "shared_examples/order_association_with_cart_post_checkout"
 
 include CurrencyHelper
 
 describe PurchasesController, :vcr do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   include ManageSubscriptionHelpers
 
   render_views
@@ -580,8 +593,6 @@ describe PurchasesController, :vcr do
             sign_in seller
 
             get :search, params: { query: "sally" }
-
-
             expect(response.parsed_body.length).to eq 1
             expect(response.parsed_body[0]["purchase_email"]).to eq @original_purchase.email
           end
@@ -1380,8 +1391,6 @@ describe PurchasesController, :vcr do
         expect(assigns(:hide_layouts)).to be(true)
       end
     end
-
-
 
     describe "GET receipt" do
       let(:purchase) { create(:purchase, email: "test@example.com") }

@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Download Page", type: :system, js: true) do
   describe "open in app" do
     before do

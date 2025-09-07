@@ -33,6 +33,7 @@ describe HandleSnsMediaconvertEventWorker do
   end
 
   describe "#perform" do
+    ensure_test_infrastructure!
     context "when transcoded_video object doesn't exist" do
       it "returns nil" do
         expect(described_class.new.perform(notification)).to be_nil

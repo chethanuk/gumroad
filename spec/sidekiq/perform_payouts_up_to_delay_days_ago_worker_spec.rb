@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe PerformPayoutsUpToDelayDaysAgoWorker do
   describe "perform" do
     let(:payout_period_end_date) { User::PayoutSchedule.next_scheduled_payout_end_date }

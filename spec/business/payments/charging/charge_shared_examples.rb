@@ -7,7 +7,6 @@ shared_examples "a base processor charge" do
     before do
       subject.id = "charge-id"
     end
-
     it "gives access to getting attributes" do
       expect(subject[:id]).to eq("charge-id")
     end

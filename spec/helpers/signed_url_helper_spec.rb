@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe SignedUrlHelper do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   before do
     pdf_path = "attachments/23b2d41ac63a40b5afa1a99bf38a0982/original/nyt.pdf"
     pdf_uri = URI.parse("https://s3.amazonaws.com/gumroad-specs/#{pdf_path}").to_s

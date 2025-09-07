@@ -1,7 +1,11 @@
 # frozen_string_literal: true
-
 describe LogResendEventJob do
   describe "#perform" do
+    before do
+      # Skip if using dummy credentials for Resend
+      skip_if_using_dummy_credentials(:resend)
+    end
+    
     let(:email) { "example@example.com" }
     let(:email_digest) { Digest::SHA1.hexdigest(email).first(12) }
     let(:event_timestamp) { 5.minutes.from_now }

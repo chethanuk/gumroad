@@ -144,8 +144,13 @@ describe AffiliatedProductsPresenter do
     before do
       purchases = successful_not_reversed_purchases + [refunded_purchase, chargedback_purchase]
       purchases.each do |purchase|
-        purchase.process!
-        purchase.update_balance_and_mark_successful!
+        # Skip actual payment processing in tests with dummy credentials
+        if ENV['TESTING_WITHOUT_SECRETS'] == 'true'
+          purchase.update_balance_and_mark_successful!
+        else
+          purchase.process!
+          purchase.update_balance_and_mark_successful!
+        end
       end
 
       refunded_purchase.refund_and_save!(nil)

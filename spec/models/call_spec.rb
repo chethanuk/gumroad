@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require "sidekiq/testing"
 
 describe Call do
@@ -166,8 +165,6 @@ describe Call do
       end
     end
   end
-
-
   describe "#formatted_time_range" do
     let(:call) { create(:call, :skip_validation, start_time: DateTime.parse("January 1 2024 10:00"), end_time: DateTime.parse("January 1 2024 11:00")) }
 

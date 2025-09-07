@@ -1,6 +1,23 @@
 # frozen_string_literal: true
-
 describe TransferStripeConnectAccountBalanceToGumroadJob do
+  
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   describe "#perform", :vcr do
     describe "when merchant account is a creator's Gumroad-controlled Stripe account" do
       describe "when the merchant account is from US" do

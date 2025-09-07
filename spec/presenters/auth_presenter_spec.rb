@@ -3,6 +3,10 @@
 require "spec_helper"
 
 describe AuthPresenter do
+  before do
+    skip_if_using_dummy_credentials(:stripe, :paypal)
+  end
+
   let(:params) { {} }
   let(:application) { nil }
   let(:presenter) { described_class.new(params:, application:) }

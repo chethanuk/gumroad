@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe RobotsService do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   before do
     @redis_namespace = Redis::Namespace.new(:robots_redis_namespace, redis: $redis)
     @sitemap_config = "Sitemap: https://test-public-files.gumroad.com/products/sitemap.xml"

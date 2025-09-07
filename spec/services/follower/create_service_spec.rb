@@ -52,8 +52,6 @@ describe Follower::CreateService do
           raise(ActiveRecord::RecordNotUnique) if behaviour.shift == :raise_once
           m.call(*args)
         end
-
-
         Follower::CreateService.perform(
           followed_user: user,
           follower_email: deleted_follower.email

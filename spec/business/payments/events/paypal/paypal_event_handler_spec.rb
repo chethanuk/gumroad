@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe PaypalEventHandler do
   describe "#schedule_paypal_event_processing" do
     context "when event is from paypal orders API" do

@@ -1,10 +1,23 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "ostruct"
 require "shared_examples/authorize_called"
 
 describe "Balance Pages Scenario", js: true, type: :system do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   include CollabProductHelper
 
   let(:seller) { create(:named_seller) }
@@ -277,8 +290,6 @@ describe "Balance Pages Scenario", js: true, type: :system do
         }
         allow_any_instance_of(UserBalanceStatsService).to receive(:payout_period_data).and_return(top_period_data)
         allow_any_instance_of(PayoutsPresenter).to receive(:payout_period_data).and_return(data)
-
-
         visit balance_path
         expect(page).to have_text("Stripe account: #{merchant_account.charge_processor_merchant_id}")
         expect(page).not_to have_text("Expected deposit on")

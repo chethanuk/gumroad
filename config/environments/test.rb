@@ -83,10 +83,16 @@ Rails.application.configure do
           ENV['AWS_SECRET_ACCESS_KEY'] || 'dummy_aws_localstack_secret_key'
         ),
         endpoint: ENV['LOCALSTACK_ENDPOINT'],
-        force_path_style: true,
+        # Note: force_path_style is only valid for S3
         s3: {
           endpoint: ENV['LOCALSTACK_ENDPOINT'],
           force_path_style: true
+        },
+        sqs: {
+          endpoint: ENV['LOCALSTACK_ENDPOINT']
+        },
+        sns: {
+          endpoint: ENV['LOCALSTACK_ENDPOINT']
         }
       )
       Rails.logger.info "🪣 AWS configured for LocalStack at #{ENV['LOCALSTACK_ENDPOINT']}"

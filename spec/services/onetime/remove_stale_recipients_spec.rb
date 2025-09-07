@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 RSpec.describe Onetime::RemoveStaleRecipients do
   describe ".process" do
     let(:follower) { create(:follower) }

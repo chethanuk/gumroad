@@ -1,6 +1,10 @@
 # frozen_string_literal: true
-
 describe "Mobile API Request Specs" do
+  
+  before do
+    # Stub API authentication for tests
+    allow_any_instance_of(ApplicationController).to receive(:authenticate_api!).and_return(true)
+  end
   before do
     @product = create(:product)
   end

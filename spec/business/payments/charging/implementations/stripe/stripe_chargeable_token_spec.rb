@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
 require "business/payments/charging/chargeable_protocol"
 require "business/payments/charging/implementations/stripe/stripe_chargeable_common_shared_examples"
 

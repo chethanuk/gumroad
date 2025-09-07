@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe("Product Page - Shipping physical preoder", type: :system, js: true, shipping: true) do
   before do
     @creator = create(:user_with_compliance_info)

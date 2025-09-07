@@ -1,6 +1,6 @@
+
 # frozen_string_literal: true
 
-require("spec_helper")
 require "timeout"
 
 describe("Purchases from the product page", type: :system, js: true) do
@@ -188,8 +188,6 @@ describe("Purchases from the product page", type: :system, js: true) do
 
     add_to_cart(link)
     check_out(link)
-
-
     # `"code" => "blah"` should not be considered a URL parameter because 'code' is a reserved word.
     expected_job_args = [
       Purchase.last.id,

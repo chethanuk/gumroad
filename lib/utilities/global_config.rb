@@ -72,6 +72,8 @@ class GlobalConfig
 
       # List of secrets that should get dummy values in test mode
       DUMMY_VALUE_SECRETS = %w[
+        OBFUSCATE_IDS_CIPHER_KEY
+        OBFUSCATE_IDS_NUMERIC_CIPHER_KEY
         STRIPE_API_KEY
         STRIPE_PUBLIC_KEY_TEST
         STRIPE_PUBLIC_KEY_PROD
@@ -126,6 +128,8 @@ class GlobalConfig
 
       # Predefined dummy values for specific secrets
       DUMMY_VALUES = {
+        "OBFUSCATE_IDS_CIPHER_KEY" => "dummy_obfuscate_ids_cipher_key32",
+        "OBFUSCATE_IDS_NUMERIC_CIPHER_KEY" => "12345678",
         "STRIPE_API_KEY" => "dummy_stripe_secret_key_test",
         "STRIPE_PUBLIC_KEY_TEST" => "dummy_stripe_public_key_test",
         "STRIPE_PUBLIC_KEY_PROD" => "dummy_stripe_public_key_prod",

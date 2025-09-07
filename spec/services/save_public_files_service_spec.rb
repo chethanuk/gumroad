@@ -70,8 +70,6 @@ describe SavePublicFilesService do
         <p>Some text</p>
         <public-file-embed id="#{public_file1.public_id}"></public-file-embed>
         <p>Middle text</p>
-
-
         <p>More text</p>
       HTML
       )

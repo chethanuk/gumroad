@@ -1,11 +1,24 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/sellers_base_controller_concern"
 require "shared_examples/authorize_called"
 require "shared_examples/with_sorting_and_pagination"
 
 describe Products::ArchivedController do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   render_views
 
   it_behaves_like "inherits from Sellers::BaseController"

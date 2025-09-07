@@ -3,6 +3,10 @@
 require "spec_helper"
 
 describe TwoFactorAuthenticationMailer do
+  before do
+    skip_if_using_dummy_credentials(:sendgrid)
+  end
+
   let(:user) { create :user }
 
   describe "#authentication_token" do

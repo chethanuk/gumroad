@@ -32,8 +32,6 @@ describe Settings::TeamPresenter do
         create(:team_membership, user: seller_two, seller: seller_one, role: TeamMembership::ROLE_ADMIN, deleted_at: Time.current)
         @team_invitation = create(:team_invitation, seller: seller_one, role: TeamMembership::ROLE_ADMIN)
         create(:team_invitation, seller: seller_one, role: TeamMembership::ROLE_ADMIN, deleted_at: Time.current)
-
-
         # seller_one belonging to seller_three team - not included in member_infos
         create(:team_membership, user: seller_one, seller: seller_three, role: TeamMembership::ROLE_ADMIN)
         create(:team_invitation, seller: seller_three, role: TeamMembership::ROLE_ADMIN)

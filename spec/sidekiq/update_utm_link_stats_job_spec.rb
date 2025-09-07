@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe UpdateUtmLinkStatsJob do
   describe "#perform" do
     let(:utm_link) { create(:utm_link) }

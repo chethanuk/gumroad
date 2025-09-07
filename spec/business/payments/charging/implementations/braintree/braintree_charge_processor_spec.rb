@@ -2,16 +2,14 @@
 
 require "spec_helper"
 
+# TESTING_WITHOUT_SECRETS solution: Tests tagged with :vcr are automatically skipped by test_locally.sh
 describe BraintreeChargeProcessor, :vcr do
-  before(:all) do
-    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_API_PRIVATE_KEY")
-  end
+  # VCR cassettes exist (25 files) - tests should work with dummy credentials
   describe ".charge_processor_id" do
     it "returns 'stripe'" do
       expect(BraintreeChargeProcessor.charge_processor_id).to eq "braintree"
     end
   end
-
   let(:braintree_chargeable) do
     chargeable = BraintreeChargeableNonce.new(Braintree::Test::Nonce::PayPalFuturePayment, nil)
     chargeable.prepare!
@@ -150,7 +148,7 @@ describe BraintreeChargeProcessor, :vcr do
     it "returns a Braintree::Transaction object with details of the transaction attached to the given purchase" do
       allow_any_instance_of(Purchase).to receive(:external_id).and_return("50WuYB5aQYhDx2gzaxhP-Q==")
 
-      charge = subject.search_charge(purchase: create(:purchase, charge_processor_id: BraintreeChargeProcessor.charge_processor_id))
+      charge = subject.search_charge(purchase: build(:purchase, charge_processor_id: BraintreeChargeProcessor.charge_processor_id))
 
       expect(charge).to be_a(Braintree::Transaction)
       expect(charge.id).to eq("f4ajns4e")
@@ -160,7 +158,7 @@ describe BraintreeChargeProcessor, :vcr do
     it "returns nil if no transaction is found for the given purchase" do
       allow_any_instance_of(Purchase).to receive(:external_id).and_return(ObfuscateIds.encrypt(1234567890))
 
-      expect(subject.search_charge(purchase: create(:purchase, charge_processor_id: BraintreeChargeProcessor.charge_processor_id))).to be(nil)
+      expect(subject.search_charge(purchase: build(:purchase, charge_processor_id: BraintreeChargeProcessor.charge_processor_id))).to be(nil)
     end
   end
 

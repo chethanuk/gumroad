@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product panel on creator profile - Sort/Filter", type: :system, js: true) do
   before do
     @creator = create(:named_user)
@@ -78,8 +76,6 @@ describe("Product panel on creator profile - Sort/Filter", type: :system, js: tr
     wait_for_ajax
     expect_product_cards_in_order([@b, @d])
   end
-
-
   describe "Filetype filter" do
     before do
       # seed PDF

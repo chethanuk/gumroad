@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Download Page product reviews", type: :system, js: true) do
   let(:product) { create(:product_with_pdf_files_with_size, custom_permalink: "custom") }
   let(:purchase) { create(:purchase_with_balance, link: product, email: "one@gr.test", created_at: 2.years.ago) }

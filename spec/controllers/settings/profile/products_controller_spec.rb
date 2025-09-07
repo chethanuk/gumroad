@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require "shared_examples/authorize_called"
 
 describe Settings::Profile::ProductsController do

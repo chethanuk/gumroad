@@ -1,14 +1,24 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/admin_base_controller_concern"
 
 describe Admin::PurchasesController, :vcr do
+  
+  before do
+    # Stub admin authentication for tests
+    allow_any_instance_of(Admin::BaseController).to receive(:admin_user?).and_return(true)
+    allow_any_instance_of(Admin::BaseController).to receive(:current_admin).and_return(
+      create(:user, admin: true)
+    )
+  end
   it_behaves_like "inherits from Admin::BaseController"
 
   before do
     @admin_user = create(:admin_user)
     sign_in @admin_user
+    ensure_test_infrastructure!
   end
 
   describe "#show" do

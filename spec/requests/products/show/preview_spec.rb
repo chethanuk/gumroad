@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product page previews", js: true, type: :system) do
   before do
     @product = create(:product, user: create(:user), custom_receipt: "<h1>Hello</h1>")

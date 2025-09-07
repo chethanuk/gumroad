@@ -4,6 +4,7 @@ require "spec_helper"
 
 describe UpdateTaxRatesJob, :vcr do
   describe "#perform" do
+    mock_external_service(:taxjar)
     it "creates rates for countries if they don't exist" do
       zero_rate_state_codes = ["DE", "MT", "NH", "OR"]
 

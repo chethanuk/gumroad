@@ -5,7 +5,6 @@ require "spec_helper"
 describe StripeChargeRadarProcessor, :vcr do
   describe "#handle_event" do
     let(:purchase) { create(:purchase) }
-
     shared_examples_for "purchase doesn't exist without Stripe Connect" do
       context "when not in production environment" do
         it "does nothing" do

@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe BraintreeController, :vcr do
+  before { mock_payment_providers }
   describe "#client_token" do
     it "returns client token in json on success" do
       get :client_token

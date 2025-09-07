@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe Onetime::SendGumroadDayFeeSavedEmail do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   before do
     @eligible_seller_1 = create(:user, gumroad_day_timezone: "Pacific Time (US & Canada)")
     create(:purchase,

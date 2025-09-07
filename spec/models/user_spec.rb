@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/versionable_concern"
 
 describe User, :vcr do
+  include CdnTestHelpers
   it_behaves_like "Versionable concern", :user, {
     email: %w(old@example.com),
     payment_address: %w(old-paypal@example.com paypal@example.com)
@@ -246,6 +248,8 @@ describe User, :vcr do
   describe "has_cdn_url" do
     before do
       stub_const("CDN_URL_MAP", { "https://gumroad-specs.s3.amazonaws.com" => "https://public-files.gumroad.com", "https://s3.amazonaws.com/gumroad/" => "https://public-files.gumroad.com/res/gumroad/" })
+      # Stub CDN URLs to handle LocalStack URLs in test environment
+      stub_cdn_urls_for_tests
     end
 
     describe "#subscribe_preview_url" do

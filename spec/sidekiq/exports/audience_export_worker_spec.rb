@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe Exports::AudienceExportWorker do
   describe "#perform" do
     let(:seller) { create(:user) }

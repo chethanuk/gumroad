@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe Stripe::SetupIntentsController, :vcr do
+  before { mock_payment_providers }
   describe "POST create" do
     context "when card params are invalid" do
       it "responds with an error" do

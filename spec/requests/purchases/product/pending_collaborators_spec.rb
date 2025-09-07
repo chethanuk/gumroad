@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product checkout - with pending collaborators", type: :system, js: true) do
   let(:product) { create(:product, :recommendable, price_cents: 20_00) }
 

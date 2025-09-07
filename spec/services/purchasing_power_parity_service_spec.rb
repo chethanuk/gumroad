@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe PurchasingPowerParityService do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   before do
     @namespace = Redis::Namespace.new(:ppp, redis: $redis)
     @service = described_class.new

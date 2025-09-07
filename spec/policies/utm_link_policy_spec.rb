@@ -10,8 +10,6 @@ describe UtmLinkPolicy do
   let(:marketing_for_seller) { create(:user) }
   let(:support_for_seller) { create(:user) }
   let(:seller) { create(:named_seller) }
-
-
   before do
     create(:team_membership, user: accountant_for_seller, seller:, role: TeamMembership::ROLE_ACCOUNTANT)
     create(:team_membership, user: admin_for_seller, seller:, role: TeamMembership::ROLE_ADMIN)

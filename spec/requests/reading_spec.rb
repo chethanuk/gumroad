@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe "Reading Scenario", type: :system, js: true do
   before do
     @url_redirect = create(:readable_url_redirect)

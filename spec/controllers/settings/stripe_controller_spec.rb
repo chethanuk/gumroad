@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe Settings::StripeController, :vcr do
+  before { mock_payment_providers }
   describe "POST disconnect" do
     before do
       @creator = create(:user)

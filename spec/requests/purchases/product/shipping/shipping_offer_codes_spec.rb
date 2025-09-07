@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe("Product Page - Shipping with offer codes", type: :system, js: true, shipping: true) do
   it "allows the 50% offer code to only affect the product cost and not the shipping in USD" do
     @product = create(:product, user: create(:user), require_shipping: true, price_cents: 100_00)

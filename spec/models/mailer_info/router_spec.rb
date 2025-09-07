@@ -3,6 +3,24 @@
 require "spec_helper"
 
 RSpec.describe MailerInfo::Router do
+  
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   let(:domain) { :gumroad }
   let(:date) { Date.current }
 

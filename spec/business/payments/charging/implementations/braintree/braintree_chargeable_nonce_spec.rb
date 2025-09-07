@@ -3,9 +3,7 @@
 require "spec_helper"
 
 describe BraintreeChargeableNonce, :vcr do
-  before(:all) do
-    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_PRIVATE_KEY")
-  end
+  # VCR cassettes exist for all 4 tests in this spec - no skip needed
   describe "#prepare!" do
     it "throws a validation failure on using an invalid chargeable" do
       expect do
@@ -13,7 +11,6 @@ describe BraintreeChargeableNonce, :vcr do
         chargeable.prepare!
       end.to raise_exception(ChargeProcessorInvalidRequestError)
     end
-
     it "throws a validation failure on using an already consumed chargeable" do
       expect do
         chargeable = BraintreeChargeableNonce.new(Braintree::Test::Nonce::Consumed, nil)

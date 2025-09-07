@@ -39,8 +39,6 @@ describe PushNotificationWorker do
 
     PushNotificationWorker.new.perform(@user.id, Device::APP_TYPES[:creator], "Title", "Body", {}, Device::NOTIFICATION_SOUNDS[:sale])
   end
-
-
   it "sends the notification only to given app_type" do
     ios_a = double("ios_a")
     ios_d = double("ios_d")

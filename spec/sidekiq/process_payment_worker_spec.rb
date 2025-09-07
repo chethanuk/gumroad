@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe ProcessPaymentWorker do
   describe "#perform" do
     it "does nothing if the payment is not in processing state" do

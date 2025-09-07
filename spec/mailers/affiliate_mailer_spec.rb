@@ -420,8 +420,6 @@ describe AffiliateMailer do
       end
     end
   end
-
-
   describe "#collaborator_invitation_accepted" do
     let(:collaborator) { create(:collaborator) }
 

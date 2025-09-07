@@ -6,7 +6,6 @@ describe Chargeable do
   let(:internal_chargeable_1) { double(charge_processor_id: "stripe") }
   let(:internal_chargeable_2) { double(charge_processor_id: "braintree") }
   let(:chargeable) { Chargeable.new([internal_chargeable_1, internal_chargeable_2]) }
-
   describe "#charge_processor_ids" do
     it "returns all internal chargeables processor ids" do
       expect(chargeable.charge_processor_ids).to eq(%w[stripe braintree])

@@ -1231,8 +1231,6 @@ describe UrlRedirectsController do
       get :confirm_page, params: { id: @url_redirect.token }
       expect(response.headers["X-Robots-Tag"]).to eq("noindex")
     end
-
-
     it "renders the confirm page correctly" do
       get :confirm_page, params: { id: @url_redirect.token }
       expect(response).to be_successful

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/receipt_presenter_concern"
 
 describe ReceiptPresenter::ChargeInfo do

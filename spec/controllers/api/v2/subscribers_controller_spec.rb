@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorized_oauth_v1_api_method"
 
 describe Api::V2::SubscribersController do
@@ -98,8 +99,6 @@ describe Api::V2::SubscribersController do
             success: true,
             subscribers: [expected_subscribers[1].as_json]
           }.as_json)
-
-
           total_found += response.parsed_body["subscribers"].size
           expect(total_found).to eq(expected_subscribers.size)
         end

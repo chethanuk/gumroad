@@ -8,8 +8,6 @@ RSpec.describe ProductReviewVideo, type: :model do
     let!(:pending_video) { create(:product_review_video, :pending_review, product_review:) }
     let!(:approved_video) { create(:product_review_video, :approved, product_review:) }
     let!(:rejected_video) { create(:product_review_video, :rejected, product_review:) }
-
-
     it "marks other videos of the same status as deleted" do
       new_video = create(:product_review_video, product_review:)
 

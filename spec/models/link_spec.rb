@@ -1,9 +1,62 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/max_purchase_count_concern"
 
 describe Link, :vcr do
+  
+  
+  
+  
+  
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   include PreorderHelper
 
   let(:link) { create(:product) }
@@ -472,8 +525,6 @@ describe Link, :vcr do
         end
       end
     end
-
-
     describe "delete_unused_prices" do
       let!(:product) { create(:product, purchase_type: :buy_and_rent, price_cents: 500, rental_price_cents: 100) }
       let(:buy_price) { product.prices.is_buy.first }
@@ -3239,8 +3290,6 @@ describe Link, :vcr do
       expect(product.valid?).to be(true)
     end
   end
-
-
 
   describe "offer_code creation" do
     before :each do

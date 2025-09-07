@@ -6,6 +6,7 @@ describe GenerateSubscribePreviewJob do
   let(:user) { create(:user, username: "foo") }
 
   describe "#perform" do
+    ensure_test_infrastructure!
     context "image generation works" do
       before :each do
         subscribe_preview = File.binread("#{Rails.root}/spec/support/fixtures/subscribe_preview.png")

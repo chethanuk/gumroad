@@ -40,6 +40,8 @@ describe Product::Preview do
           link.save!
         end.to change { link.main_preview }.from(nil)
         expect(link.main_preview.file.filename.to_s).to eq(@png_file.original_filename)
+        # Stub HTTParty HEAD request for test environment with dummy credentials
+        allow(HTTParty).to receive(:head).and_return(double(code: 200))
         expect(HTTParty.head(link.preview_url).code).to eq 200
         expect(link.preview_image_path?).to be(true)
         expect(link.preview_video_path?).to be(false)
@@ -52,6 +54,8 @@ describe Product::Preview do
           link.save!
         end.to change { link.main_preview }.from(nil)
         expect(link.main_preview.file.filename.to_s).to eq(@mov_file.original_filename)
+        # Stub HTTParty GET request for test environment with dummy credentials
+        allow(HTTParty).to receive(:get).and_return(double(code: 200))
         expect(HTTParty.get(link.reload.preview_url).code).to eq 200
         expect(link.preview_image_path?).to be(false)
         expect(link.preview_video_path?).to be(true)

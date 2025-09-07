@@ -7,7 +7,6 @@ describe FlowOfFunds do
     let(:currency) { Currency::USD }
     let(:amount_cents) { 100_00 }
     let(:flow_of_funds) { described_class.build_simple_flow_of_funds(currency, amount_cents) }
-
     it "returns a flow of funds object" do
       expect(flow_of_funds).to be_a(FlowOfFunds)
     end

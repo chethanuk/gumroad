@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe("Product Page - Shipping Scenarios", type: :system, js: true, shipping: true) do
   it "shows the shipping in USD in the blurb and not apply taxes on top of it" do
     @user = create(:user_with_compliance_info)

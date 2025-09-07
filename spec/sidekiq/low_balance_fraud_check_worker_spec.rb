@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe LowBalanceFraudCheckWorker do
   describe "#perform" do
     before do

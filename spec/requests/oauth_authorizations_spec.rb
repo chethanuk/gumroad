@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe Oauth::AuthorizationsController, type: :system do
   before :each do
     visit "/"

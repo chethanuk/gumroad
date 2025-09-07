@@ -1,11 +1,11 @@
 # frozen_string_literal: true
-
 describe StripeEventHandler do
   let(:event_id) { "evt_eventid" }
 
   describe "error handling", :vcr do
+    # VCR cassettes exist for error handling tests
     before do
-      skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+      # Tests will use VCR cassettes with dummy credentials
     end
     context "when staging environment" do
       before do
@@ -138,9 +138,7 @@ describe StripeEventHandler do
 
   describe "an event on a connected account" do
     describe "an account event", :vcr do
-      before do
-        skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
-      end
+      # VCR cassettes exist for all tests in this block - no skip needed
       before do
         @user = create(:user)
         @merchant_account = create(:merchant_account_stripe, user: @user)
@@ -192,8 +190,9 @@ describe StripeEventHandler do
     end
 
     describe "a payout event", :vcr do
+      # VCR cassettes will be used for payout event tests
       before do
-        skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
+        # Tests will use VCR cassettes with dummy credentials
       end
       let(:stripe_event) do
         {
@@ -221,9 +220,7 @@ describe StripeEventHandler do
     end
 
     describe "account deauthorized", :vcr do
-      before do
-        skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
-      end
+      # VCR cassettes exist for these tests - no skip needed
       before do
         @user = create(:user)
         @product = create(:product, user: @user)
@@ -280,9 +277,7 @@ describe StripeEventHandler do
     end
 
     describe "a capability event", :vcr do
-      before do
-        skip "Skipping VCR test when using dummy Stripe credentials" if GlobalConfig.using_dummy?("STRIPE_API_KEY")
-      end
+      # VCR cassette exists for this test - no skip needed
       before do
         @user = create(:user)
         @merchant_account = create(:merchant_account_stripe, user: @user)

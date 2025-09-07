@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe RedisKey do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   describe ".ai_request_throttle" do
     it "returns a properly formatted redis key with user id" do
       user_id = 123

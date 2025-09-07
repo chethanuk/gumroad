@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe SellerProfileProductsSection do
+  before { ensure_test_infrastructure! }
   describe "validations" do
     it "validates json_data with the correct schema" do
       section = build(:seller_profile_products_section, shown_products: [create(:product, name: "Product 1").id])

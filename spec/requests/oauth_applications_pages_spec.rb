@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe "OauthApplicationsPages", type: :system, js: true do
   context "On /settings/advanced page" do
     let(:user) { create(:named_user) }

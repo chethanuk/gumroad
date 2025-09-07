@@ -3,6 +3,11 @@
 require "spec_helper"
 
 describe AbnValidationService do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   before do
     @vatstack_response = {
       "active" => true,

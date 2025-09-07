@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe ScheduleWorkflowEmailsWorker do
   before do
     @product = create(:product)
@@ -10,6 +9,7 @@ describe ScheduleWorkflowEmailsWorker do
   end
 
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     it "enqueues SendWorkflowInstallmentWorker for the installment" do
       described_class.new.perform(@purchase.id)
 

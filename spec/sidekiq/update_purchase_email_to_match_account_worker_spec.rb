@@ -10,6 +10,7 @@ describe UpdatePurchaseEmailToMatchAccountWorker do
   end
 
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     it "updates email address in every purchased product" do
       described_class.new.perform(@user.id)
 

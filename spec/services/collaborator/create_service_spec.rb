@@ -17,8 +17,6 @@ describe Collaborator::CreateService do
       }
     end
 
-
-
     context "with 'apply_to_all_products' enabled" do
       it "creates a collaborator" do
         expect do

@@ -77,8 +77,6 @@ describe Exports::TaxSummary::Payable, :vcr do
         expect(row[16]).to eq(@compliance_info.business_tax_id.decrypt(GlobalConfig.get("STRONGBOX_GENERAL_PASSWORD")))
       end
     end
-
-
     it "returns no data if no payments exist" do
       csv = Exports::TaxSummary::Payable.new(user: create(:user), year:).perform
       expect(csv).to be_nil

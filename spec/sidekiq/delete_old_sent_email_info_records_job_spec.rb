@@ -4,6 +4,7 @@ require "spec_helper"
 
 describe DeleteOldSentEmailInfoRecordsJob do
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     it "deletes targeted rows" do
       create(:sent_email_info, created_at: 3.years.ago)
       create(:sent_email_info, created_at: 2.years.ago)

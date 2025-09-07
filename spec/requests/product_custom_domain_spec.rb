@@ -3,6 +3,18 @@
 require "spec_helper"
 
 describe "ProductCustomDomainScenario", type: :system, js: true do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   let(:product) { create(:product) }
   let(:custom_domain) { create(:custom_domain, domain: "test-custom-domain.gumroad.com", user: nil, product:) }
   let(:port) { Capybara.current_session.server.port }

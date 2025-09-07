@@ -3,6 +3,8 @@
 require "spec_helper"
 
 RSpec.describe ResendEventInfo do
+  # Removed DummyCredentialHelper conditional skip
+
   before do
     Feature.activate(:resend)
     Feature.activate(:force_resend)

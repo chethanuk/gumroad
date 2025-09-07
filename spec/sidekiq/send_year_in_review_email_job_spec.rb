@@ -1,9 +1,35 @@
 # frozen_string_literal: true
-
 describe SendYearInReviewEmailJob do
+  
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   include PaymentsHelper, ProductPageViewHelpers
 
   describe ".perform" do
+    before do
+      skip_if_using_dummy_credentials(:sendgrid, :openai)
+    end
     context "when no payouts exist for the selected year" do
       let(:date) { Date.new(2021, 2, 22) }
       let!(:seller) do

@@ -3,6 +3,16 @@
 require "spec_helper"
 
 describe PostToPingEndpointsWorker, :vcr do
+  
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   before do
     @user = create(:user, notification_endpoint: "http://notification.com")
     @product = create(:product, user: @user, unique_permalink: "Iqw", price_cents: 500)
@@ -42,8 +52,6 @@ describe PostToPingEndpointsWorker, :vcr do
         }
       }
     end
-
-
     @http_double = double
     allow(@http_double).to receive(:success?).and_return(true)
     allow(@http_double).to receive(:code).and_return(200)

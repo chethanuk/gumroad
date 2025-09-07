@@ -3,6 +3,11 @@
 require "spec_helper"
 
 describe MvaValidationService do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   before do
     @vatstack_response = {
       "id" => "5e5a894fa5807929777ad9c7",

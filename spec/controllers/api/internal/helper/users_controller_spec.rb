@@ -3,6 +3,11 @@
 require "spec_helper"
 
 describe Api::Internal::Helper::UsersController do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   include HelperAISpecHelper
 
   let(:user) { create(:user_with_compliance_info) }

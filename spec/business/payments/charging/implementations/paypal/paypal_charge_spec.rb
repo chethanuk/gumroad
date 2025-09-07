@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 describe PaypalCharge do
   context "when order api is used" do
     context "when paypal transaction is present" do
@@ -430,7 +431,6 @@ describe PaypalCharge do
           "status" => "COMPLETED"
         }
       end
-
       subject do
         PaypalCharge.new(paypal_transaction_id: "58003532R80972514",
                          order_api_used: true,
@@ -577,7 +577,7 @@ describe PaypalCharge do
         expect(paypal_charge.refunded).to be(false)
       end
 
-      it "does not have a flow of funds" do
+      it "does not have a flow of funds" , :paypal_vcr , :paypal_vcr do
         paypal_charge = PaypalCharge.new(paypal_transaction_id: "5SP884803B810025T",
                                          order_api_used: false,
                                          payment_details: {

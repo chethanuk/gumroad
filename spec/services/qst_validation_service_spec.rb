@@ -3,6 +3,11 @@
 require "spec_helper"
 
 describe QstValidationService, :vcr do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   let(:qst_id) { "1002092821TQ0001" }
 
   it "returns true when a valid qst id is provided" do

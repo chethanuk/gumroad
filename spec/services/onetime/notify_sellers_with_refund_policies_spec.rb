@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe Onetime::NotifySellersWithRefundPolicies do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   let(:seller_one) { create(:user) }
   let(:seller_two) { create(:user) }
   let(:product_one) { create(:product, user: seller_one) }

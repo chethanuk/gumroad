@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authentication_required"
 
 describe Api::Internal::Collaborators::InvitationAcceptancesController do

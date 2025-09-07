@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product checkout - with collaborator", type: :system, js: true) do
   let(:product) { create(:product, :recommendable, price_cents: 20_00) }
   let!(:collaborator) { create(:collaborator, affiliate_basis_points: 50_00, products: [product]) }

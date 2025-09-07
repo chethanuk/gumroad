@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 describe SendMembershipsPriceUpdateEmailsJob do
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     let(:subscription) { create(:subscription) }
     let(:effective_on) { rand(1..7).days.from_now.to_date }
 

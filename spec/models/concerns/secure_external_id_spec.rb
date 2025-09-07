@@ -67,8 +67,6 @@ RSpec.describe SecureExternalId do
         expect(test_class.find_by_secure_external_id(token, scope: "test")).to be_nil # expired
       end
     end
-
-
     it "returns nil for non-string input" do
       expect(test_class.find_by_secure_external_id(123, scope: "test")).to be_nil
     end

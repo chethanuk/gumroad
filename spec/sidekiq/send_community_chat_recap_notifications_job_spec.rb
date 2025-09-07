@@ -6,6 +6,11 @@ RSpec.describe SendCommunityChatRecapNotificationsJob do
   let(:job) { described_class.new }
 
   describe "#perform" do
+    before do
+      # This test only needs database, no external dependencies
+      ensure_test_infrastructure!
+    end
+    
     let(:recap_run) { create(:community_chat_recap_run) }
     let(:seller) { create(:user) }
     let(:product) { create(:product, user: seller, community_chat_enabled: true) }

@@ -1,7 +1,11 @@
 # frozen_string_literal: true
-
 describe ScheduleMembershipPriceUpdatesJob do
   describe "perform" do
+    before do
+      # This test only needs database, no external dependencies
+      ensure_test_infrastructure!
+    end
+    
     context "for a non-tiered membership variant" do
       it "does nothing" do
         variant = create(:variant)

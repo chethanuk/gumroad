@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe UpdatePayoutStatusWorker do
   describe "#perform" do
     context "when the payout is not created in the split mode" do

@@ -3,6 +3,24 @@
 require "spec_helper"
 
 describe Purchase, :vcr do
+  
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   include CurrencyHelper
   include ProductsHelper
 
@@ -4687,8 +4705,6 @@ describe Purchase, :vcr do
       end
     end
   end
-
-
   describe "#flat_fee_applicable?" do
     before do
       @creator = create(:user, created_at: Date.new(2022, 12, 15))
@@ -6157,8 +6173,6 @@ describe Purchase, :vcr do
         expect(purchase.eligible_for_review_reminder?).to be false
       end
     end
-
-
     context "when purchase is refunded" do
       before { purchase.update!(stripe_refunded: true) }
 

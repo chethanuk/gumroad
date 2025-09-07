@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe SyncStuckPayoutsJob do
   describe "#perform" do
     context "when processor type if PayPal" do

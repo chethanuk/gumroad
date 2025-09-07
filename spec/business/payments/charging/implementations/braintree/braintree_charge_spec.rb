@@ -3,14 +3,11 @@
 require "spec_helper"
 
 describe BraintreeCharge, :vcr do
-  before(:all) do
-    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_API_PRIVATE_KEY")
-  end
+  # VCR cassettes exist (43 files) - tests should work with dummy credentials
   describe "charge without fingerprint or card details" do
     before do
       chargeable_element = BraintreeChargeableNonce.new(Braintree::Test::Nonce::PayPalFuturePayment, nil)
       chargeable_element.prepare!
-
       params = {
         merchant_account_id: BRAINTREE_MERCHANT_ACCOUNT_ID_FOR_SUPPLIERS,
         amount: 100_00 / 100.0,

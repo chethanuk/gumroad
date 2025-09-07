@@ -3,6 +3,11 @@
 require "spec_helper"
 
 describe SidekiqUtility do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   before do
     ENV["SIDEKIQ_GRACEFUL_SHUTDOWN_TIMEOUT"] = "3"
     ENV["SIDEKIQ_LIFECYCLE_HOOK_NAME"] = "sample_hook_name"

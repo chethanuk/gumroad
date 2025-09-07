@@ -4,6 +4,7 @@ require "spec_helper"
 
 describe PurgeOldDeletedAssetPreviewsWorker do
   describe "#perform" do
+    ensure_test_infrastructure!
     it "deletes targeted rows" do
       stub_const("#{described_class}::DELETION_BATCH_SIZE", 1)
       create(:asset_preview, deleted_at: 2.months.ago)

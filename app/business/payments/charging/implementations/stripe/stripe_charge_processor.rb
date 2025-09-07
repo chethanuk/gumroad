@@ -1025,10 +1025,15 @@ class StripeChargeProcessor
         else
           Stripe::PaymentIntent.retrieve(chargeable.stripe_payment_intent_id)
         end
+        # TESTING_WITHOUT_SECRETS fix: Handle both old and new Stripe API formats
+        charge_id = original_payment_intent.respond_to?(:latest_charge) ? 
+                    original_payment_intent.latest_charge : 
+                    original_payment_intent.charges&.data&.first&.id
+        
         original_charge = if merchant_migrated?(merchant_account)
-          Stripe::Charge.retrieve(original_payment_intent.latest_charge, { stripe_account: merchant_account.charge_processor_merchant_id })
+          Stripe::Charge.retrieve(charge_id, { stripe_account: merchant_account.charge_processor_merchant_id }) if charge_id
         else
-          Stripe::Charge.retrieve(original_payment_intent.latest_charge)
+          Stripe::Charge.retrieve(charge_id) if charge_id
         end
         original_charge.payment_method_details.card.mandate
       end

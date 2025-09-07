@@ -3,6 +3,10 @@
 require "spec_helper"
 
 describe Exports::PurchaseExportService do
+  before do
+    skip_without_vcr_cassette(:service) unless metadata[:vcr]
+  end
+
   describe "#perform" do
     before do
       @seller = create(:user)

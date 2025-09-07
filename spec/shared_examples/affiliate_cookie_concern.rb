@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "ipaddr"
 
 RSpec.shared_examples_for "AffiliateCookie concern" do

@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe UserBalanceStatsService do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   let(:user) { create(:user) }
   let(:instance) { described_class.new(user:) }
   let(:example_values) { { foo: "bar" } }

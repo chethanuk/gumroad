@@ -4,7 +4,6 @@ require "spec_helper"
 
 describe StripeChargeIntent, :vcr do
   include StripeChargesHelper
-
   let(:processor_payment_intent) do
     create_stripe_payment_intent(StripePaymentMethodHelper.success.to_stripejs_payment_method_id,
                                  amount: 1_00,

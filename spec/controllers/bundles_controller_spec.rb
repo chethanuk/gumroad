@@ -1,10 +1,23 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/sellers_base_controller_concern"
 require "shared_examples/authorize_called"
 
 describe BundlesController do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   let(:seller) { create(:named_seller, :eligible_for_service_products) }
   let(:bundle) { create(:product, :bundle, user: seller, price_cents: 2000) }
 

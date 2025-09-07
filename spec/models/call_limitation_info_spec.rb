@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe CallLimitationInfo do
   describe "validations" do
     context "call is not a call product" do

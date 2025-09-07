@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/discover_layout"
 
 describe "Wishlist show page", :js, type: :system do

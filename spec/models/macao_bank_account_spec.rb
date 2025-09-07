@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe MacaoBankAccount do
   describe "#bank_account_type" do
     it "returns MO" do

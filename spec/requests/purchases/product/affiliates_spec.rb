@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product checkout - with affiliate", type: :system, js: true) do
   def set_affiliate_cookie
     browser = Capybara.current_session.driver.browser

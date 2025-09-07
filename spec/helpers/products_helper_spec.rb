@@ -3,6 +3,18 @@
 require "spec_helper"
 
 describe ProductsHelper do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   describe "#view_content_button_text" do
     it "shows the custom button text when available" do
       product = create(:product)

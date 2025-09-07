@@ -9,6 +9,7 @@ describe SendWishlistUpdatedEmailsJob do
   let(:wishlist_product_ids) { [wishlist_product.id] }
 
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     it "sends an email to the wishlist follower" do
       expect(CustomerLowPriorityMailer).to receive(:wishlist_updated).with(wishlist_follower.id, 1).and_call_original
       described_class.new.perform(wishlist.id, wishlist_product_ids)

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe UnblockObjectWorker do
   describe "#perform" do
     let(:email_domain) { "example.com" }
@@ -12,4 +11,15 @@ describe UnblockObjectWorker do
       expect(BlockedObject.active.email_domain.count).to eq(0)
     end
   end
+
+  def mongodb_available?
+    begin
+      Mongoid.default_client.database_names
+      true
+    rescue => e
+      Rails.logger.warn "MongoDB not available: #{e.message}"
+      false
+    end
+  end
+
 end

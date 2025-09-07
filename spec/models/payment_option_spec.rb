@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe PaymentOption do
+  before { mock_payment_providers if using_dummy_credentials? }
   describe "validation" do
     it "considers a PaymentOption to be invalid unless all required information is provided" do
       payment_option = PaymentOption.new

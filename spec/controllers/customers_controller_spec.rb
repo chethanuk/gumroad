@@ -1,9 +1,22 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe CustomersController, :vcr do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   render_views
 
   let(:seller) { create(:named_user) }
@@ -274,8 +287,6 @@ describe CustomersController, :vcr do
         expect(response.parsed_body[0]["name"]).to eq "Receipt"
         expect(response.parsed_body[0]["state"]).to eq "Opened"
         expect(response.parsed_body[0]["url"]).to eq receipt_purchase_url(original_purchase.external_id, email: original_purchase.email)
-
-
         expect(response.parsed_body[1]["type"]).to eq("receipt")
         expect(response.parsed_body[1]["id"]).to eq recurring_purchase.external_id
         expect(response.parsed_body[1]["name"]).to eq "Receipt"

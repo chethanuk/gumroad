@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/affiliate_cookie_concern"
 
 describe AffiliateRedirectController do

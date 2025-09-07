@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe SellerProfileWishlistsSection do
+  before { ensure_test_infrastructure! }
   describe "validations" do
     it "validates json_data with the correct schema" do
       section = build(:seller_profile_wishlists_section, shown_wishlists: [create(:wishlist).id])

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/affiliate_cookie_concern"
 require "shared_examples/authorize_called"
 require "shared_examples/collaborator_access"
@@ -13,6 +14,18 @@ def e404_test(action)
 end
 
 describe LinksController, :vcr do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   render_views
 
   context "within seller area" do
@@ -1402,8 +1415,6 @@ describe LinksController, :vcr do
             <p>Some text</p>
             <public-file-embed id="#{public_file1.public_id}"></public-file-embed>
             <p>Middle text</p>
-
-
             <p>More text</p>
           HTML
           )
@@ -2192,8 +2203,6 @@ describe LinksController, :vcr do
             { "type" => "fileEmbed", "attrs" => { "id" => file1.external_id, "uid" => SecureRandom.uuid } },
             { "type" => "fileEmbed", "attrs" => { "id" => file2.external_id, "uid" => SecureRandom.uuid } },
           ] }
-
-
           post :update, params: {
             id: @product.unique_permalink,
             rich_content: [{ id: nil, title: "Page 1", description: { type: "doc", content: [folder1] } }],
@@ -4005,8 +4014,6 @@ describe LinksController, :vcr do
           expect do
             get :show, params: { id: product.to_param, recommended_by: "discover", query: "something" }
           end.to change(DiscoverSearch, :count).by(1)
-
-
           expect(DiscoverSearch.last!.attributes).to include(
             "query" => "something",
             "ip_address" => "0.0.0.0",
@@ -4317,8 +4324,6 @@ describe LinksController, :vcr do
                                                "products" => shown_products[0...9].map { product_json(_1, "profile") }
                                              })
         end
-
-
         it "returns products in page layout order when applicable if searching by user" do
           @recommended_by = nil
           @on_profile = true

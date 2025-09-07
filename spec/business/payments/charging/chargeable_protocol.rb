@@ -5,7 +5,6 @@ require "spec_helper"
 # A chargeable is anything that can be used to charge a credit card for a purchase, subscription, etc. It should be
 # immutable except when the prepare function is called. This protocol is designed to be backed by any other object or
 # remote system (i.e. a charge processor) which is why all data is exposed through functions.
-
 shared_examples_for "a chargeable" do
   # charge_processor_id: A string indicating the charge processor
   describe "#charge_processor_id" do

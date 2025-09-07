@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe ProductCachedValue do
   describe "#create" do
     it "is valid with a product" do

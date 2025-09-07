@@ -1,6 +1,6 @@
+
 # frozen_string_literal: true
 
-require("spec_helper")
 require "timeout"
 
 describe("Successful purchases from a product page with SCA and mandate creation for Indian cards", type: :system, js: true) do

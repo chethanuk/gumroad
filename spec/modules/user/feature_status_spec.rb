@@ -40,8 +40,6 @@ describe User::FeatureStatus do
     end
   end
 
-
-
   describe "#charge_paypal_payout_fee?" do
     let!(:seller) { create(:user) }
     before do

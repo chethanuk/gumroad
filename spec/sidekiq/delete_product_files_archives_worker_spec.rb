@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe DeleteProductFilesArchivesWorker do
+  before { ensure_test_infrastructure! }
   before do
     @product = create(:product, user: create(:named_seller))
     product_file_1 = create(:product_file, link: @product)
@@ -37,8 +38,6 @@ describe DeleteProductFilesArchivesWorker do
     folder_archive2.product_files = [product_file_3, product_file_4]
     folder_archive2.mark_in_progress!
     folder_archive2.mark_ready!
-
-
     folder3_id = SecureRandom.uuid
     product_file_5 = create(:product_file)
     product_file_6 = create(:product_file)

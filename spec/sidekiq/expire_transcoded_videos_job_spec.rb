@@ -3,6 +3,29 @@
 require "spec_helper"
 
 describe ExpireTranscodedVideosJob do
+  
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  
+  before do
+    skip_without_localstack
+  end
+  
   describe "#perform" do
     it "marks old stamped pdfs as deleted" do
       $redis.set(RedisKey.transcoded_videos_recentness_limit_in_months, 3)

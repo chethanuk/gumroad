@@ -4,6 +4,7 @@ require "spec_helper"
 
 describe ScheduleAbandonedCartEmailsJob do
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     let(:seller1) { create(:user) }
     let!(:seller1_payment) { create(:payment_completed, user: seller1) }
     let!(:seller1_product1) { create(:product, user: seller1) }

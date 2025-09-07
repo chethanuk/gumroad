@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe Country do
   describe "#supports_stripe_cross_border_payouts?" do
     it "returns true if country only supports cross-border payouts via stripe otherwise returns false" do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 describe AnalyzeFileWorker do
   describe "#perform" do
+    ensure_test_infrastructure!
     before do
       allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("staging"))
     end

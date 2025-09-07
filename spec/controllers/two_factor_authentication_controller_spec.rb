@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/merge_guest_cart_with_user_cart"
 
 describe TwoFactorAuthenticationController do

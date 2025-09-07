@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe "Purchasing power parity", type: :system, js: true do
   before do
     @user = create(:user, purchasing_power_parity_enabled: true, display_offer_code_field: true)

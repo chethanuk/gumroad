@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe LogSendgridEventWorker do
   describe "#perform" do
     let(:email) { "example@example.com" }

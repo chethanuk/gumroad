@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe SuspendUsersWorker do
   describe "#perform" do
     let(:admin_user) { create(:admin_user) }

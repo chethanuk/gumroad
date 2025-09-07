@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe HandleEmailEventInfo::ForReceiptEmail do
   let!(:preorder) { create(:preorder) }
   let(:purchase) { create(:purchase) }

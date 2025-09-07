@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "business/payments/charging/charge_shared_examples"
 
+require "business/payments/charging/charge_shared_examples"
 describe StripeCharge, :vcr do
   include StripeMerchantAccountHelper
   include StripeChargesHelper

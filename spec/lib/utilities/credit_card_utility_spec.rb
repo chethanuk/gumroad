@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe "#extract_month_and_year" do
   before do
     @expiry_date = "05 / 15"

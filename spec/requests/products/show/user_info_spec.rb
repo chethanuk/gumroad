@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("ProductUserInfoScenario", type: :system, js: true) do
   it("it fills the logged in user's information in the form") do
     user = create(:user, name: "amir", street_address: "1640 17th st", zip_code: "94103", country: "United States", city: "San Francisco", state: "CA")

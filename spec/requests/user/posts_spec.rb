@@ -1,6 +1,6 @@
+
 # frozen_string_literal: true
 
-require("spec_helper")
 require "shared_examples/authorize_called"
 
 describe("Posts on seller profile", type: :system, js: true) do

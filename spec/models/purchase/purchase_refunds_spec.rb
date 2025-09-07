@@ -3,6 +3,30 @@
 require "spec_helper"
 
 describe "PurchaseRefunds", :vcr do
+  
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   include CurrencyHelper
   include ProductsHelper
 
@@ -477,8 +501,6 @@ describe "PurchaseRefunds", :vcr do
           expect(Refund.last.creator_tax_cents).to eq @purchase.tax_cents
           expect(Refund.last.gumroad_tax_cents).to eq @purchase.gumroad_tax_cents
         end
-
-
         it "refunds with given amount cents" do
           expect(ChargeProcessor).to receive(:refund!).with(@purchase.charge_processor_id, @purchase.stripe_transaction_id, anything).and_call_original
           expect(@purchase).to receive(:debit_processor_fee_from_merchant_account!).and_call_original

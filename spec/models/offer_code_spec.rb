@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/max_purchase_count_concern"
 
 describe OfferCode do

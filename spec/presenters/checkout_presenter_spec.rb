@@ -1,6 +1,11 @@
+
 # frozen_string_literal: true
 
 describe CheckoutPresenter do
+  before do
+    skip_if_using_dummy_credentials(:stripe, :paypal)
+  end
+
   include ManageSubscriptionHelpers
   include Rails.application.routes.url_helpers
 
@@ -11,6 +16,11 @@ describe CheckoutPresenter do
           @user = create(:user, currency_type: "jpy", credit_card: create(:credit_card))
         end
       end
+      
+      # Stub GeoIp lookup for test environment
+      geo_stub = double(country_name: "United States", region_name: "California")
+      allow(GeoIp).to receive(:lookup).and_return(geo_stub)
+      
       @instance = described_class.new(logged_in_user: @user, ip: "104.193.168.19")
 
       TipOptionsService.set_tip_options([5, 15, 25])
@@ -26,7 +36,7 @@ describe CheckoutPresenter do
         us_states: STATES,
         ca_provinces: Compliance::Countries.subdivisions_for_select(Compliance::Countries::CAN.alpha2).map(&:first),
         country: "US",
-        state: "CA",
+        state: "California",
         address: { city: nil, street: nil, zip: nil },
         add_products: [],
         clear_cart: false,
@@ -64,7 +74,7 @@ describe CheckoutPresenter do
         us_states: STATES,
         ca_provinces: Compliance::Countries.subdivisions_for_select(Compliance::Countries::CAN.alpha2).map(&:first),
         country: "US",
-        state: "CA",
+        state: "California",
         address: { city: nil, street: nil, zip: nil },
         saved_credit_card: { expiration_date: "12/23", number: "**** **** **** 4242", type: "visa", requires_mandate: false },
         recaptcha_key: GlobalConfig.get("RECAPTCHA_MONEY_SITE_KEY"),

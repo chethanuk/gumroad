@@ -3,7 +3,37 @@
 require "spec_helper"
 
 describe SendBundlesMarketingEmailJob do
+  
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
+    before do
+      # This test only needs database, no external dependencies
+      ensure_test_infrastructure!
+    end
+    
     let(:seller) { create(:user) }
     let!(:products) do
       build_list(:product, 10, user: seller) do |product, i|

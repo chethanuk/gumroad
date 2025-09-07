@@ -5,7 +5,6 @@ require "spec_helper"
 describe CardDataHandlingError do
   describe "with message" do
     let(:subject) { CardDataHandlingError.new("the-error-message") }
-
     it "message should be accessible" do
       expect(subject.error_message).to eq "the-error-message"
     end

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe SaveContentUpsellsService do
   let(:seller) { create(:user) }
   let(:product) { create(:product, user: seller, price_cents: 1000) }

@@ -113,8 +113,6 @@ describe BundleProduct do
         expect(bundle_product.errors.full_messages).to include("A call product cannot be added to a bundle")
       end
     end
-
-
     context "when a bundle product already exists for the product" do
       let(:duplicate_bundle_product) { build(:bundle_product, product: bundle_product.product, bundle: bundle_product.bundle) }
 

@@ -3,7 +3,16 @@
 require "spec_helper"
 
 describe DeleteExpiredProductCachedValuesWorker do
-  describe "#perform" do
+    before do
+    ensure_test_infrastructure!
+  end
+
+describe "#perform" do
+    before do
+      # This test only needs database, no external dependencies
+      ensure_test_infrastructure!
+    end
+    
     it "deletes expired rows, except the latest one per product" do
       product_1 = create(:product)
       create_list(:product_cached_value, 3, :expired, product: product_1) # should delete 3 of them

@@ -210,8 +210,6 @@ describe Collaborator do
     context "when apply_to_all_products is false" do
       let(:collaborator) { create(:collaborator, apply_to_all_products: false, dont_show_as_co_creator: true) }
       let!(:product_affiliate) { create(:product_affiliate, affiliate: collaborator, product:, dont_show_as_co_creator: false) }
-
-
       it "returns true if the product_affiliate's dont_show_as_co_creator is false, false otherwise" do
         expect(collaborator.show_as_co_creator_for_product?(product)).to eq true
 

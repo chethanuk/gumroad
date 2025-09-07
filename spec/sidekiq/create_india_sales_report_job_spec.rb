@@ -4,6 +4,8 @@ require "spec_helper"
 
 describe CreateIndiaSalesReportJob do
   describe "#perform" do
+    mock_external_service(:taxjar)
+    ensure_test_infrastructure!
     it "raises an ArgumentError if the year is less than 2014 or greater than 3200" do
       expect do
         described_class.new.perform(1, 2013)

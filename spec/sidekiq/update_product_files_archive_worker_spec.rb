@@ -4,7 +4,10 @@ require "spec_helper"
 
 describe UpdateProductFilesArchiveWorker, :vcr do
   describe "#perform" do
+    ensure_test_infrastructure!
     before do
+      # Skip if using dummy AWS credentials without LocalStack
+      skip_without_localstack
       @long_file_name = "个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人个出租车学习杯子人"
 
       allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("production"))

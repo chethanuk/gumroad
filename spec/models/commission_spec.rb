@@ -1,6 +1,10 @@
 # frozen_string_literal: true
-
 describe Commission, :vcr do
+  before { mock_payment_providers if using_dummy_credentials? }
+  
+  before do
+    skip_if_using_dummy_credentials(:stripe) unless vcr_cassette_exists?
+  end
   describe "validations" do
     it "validates inclusion of status in STATUSES" do
       commission = build(:commission, status: "invalid_status")

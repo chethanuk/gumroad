@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe BlockSuspendedAccountIpWorker do
   describe "#perform" do
     before do
@@ -32,4 +31,15 @@ describe BlockSuspendedAccountIpWorker do
       expect(BlockedObject.find_by(object_value: @user.last_sign_in_ip)).to be(nil)
     end
   end
+
+  def mongodb_available?
+    begin
+      Mongoid.default_client.database_names
+      true
+    rescue => e
+      Rails.logger.warn "MongoDB not available: #{e.message}"
+      false
+    end
+  end
+
 end

@@ -29,7 +29,7 @@ describe PaypalPayoutProcessor do
       end
 
       it "returns true if creator has a paypal account connected", :vcr do
-        skip "Skipping PayPal VCR test when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+        # VCR cassettes exist for PayPal tests - will work with dummy credentials
         create(:merchant_account_paypal, user:, charge_processor_merchant_id: "B66YJBBNCRW6L")
         expect(described_class.is_user_payable(user, 10_01)).to eq(true)
       end
@@ -165,7 +165,7 @@ describe PaypalPayoutProcessor do
     end
 
     it "returns true if the user has a PayPal account connected", :vcr do
-      skip "Skipping PayPal VCR test when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+      # VCR cassettes exist for PayPal tests - will work with dummy credentials
       user.update!(payment_address: "")
       expect(user.reload.has_valid_payout_info?).to eq false
 
@@ -370,7 +370,7 @@ describe PaypalPayoutProcessor do
     end
 
     it "creates the correct payment objects and update them once the IPN comes in" do
-      skip "Skipping PayPal test that requires real credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+      # VCR cassettes will handle PayPal API interactions
       Payouts.create_payments_for_balances_up_to_date_for_users(Date.today - 1, PayoutProcessorType::PAYPAL, User.holding_balance)
 
       p1 = @u1.payments.last
@@ -483,7 +483,7 @@ describe PaypalPayoutProcessor do
     end
 
     it "decreases the user's balance by the amount of the payment and not down to 0" do
-      skip "Skipping PayPal test that requires real credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+      # VCR cassettes will handle PayPal API interactions
       Payouts.create_payments_for_balances_up_to_date_for_users(Date.today - 1, PayoutProcessorType::PAYPAL, User.holding_balance)
 
       @u1.reload
@@ -512,7 +512,7 @@ describe PaypalPayoutProcessor do
     end
 
     it "behaves idempotently" do
-      skip "Skipping PayPal test that requires real credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+      # VCR cassettes will handle PayPal API interactions
       Payouts.create_payments_for_balances_up_to_date_for_users(Date.today - 1, PayoutProcessorType::PAYPAL, User.holding_balance)
 
       @u1.reload
@@ -568,7 +568,7 @@ describe PaypalPayoutProcessor do
       end
 
       it "creates the proper payments and mark the balances and make the association between those" do
-        skip "Skipping PayPal test that requires real credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+        # VCR cassettes will handle PayPal API interactions
         WebMock.stub_request(:post, PAYPAL_ENDPOINT)
           .to_return(body: "TIMESTAMP=2012%2d10%2d26T20%3a29%3a14Z&CORRELATIONID=c51c5e0cecbce&ACK=Success&VERSION=90%2e0&BUILD=4072860")
         Payouts.create_payments_for_balances_up_to_date_for_users(Date.today - 1, PayoutProcessorType::PAYPAL, User.holding_balance)
@@ -627,7 +627,7 @@ describe PaypalPayoutProcessor do
       end
 
       it "marks the balances as unpaid if the paypal call fails" do
-        skip "Skipping PayPal test that requires real credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+        # VCR cassettes will handle PayPal API interactions
         WebMock.stub_request(:post, PAYPAL_ENDPOINT)
           .to_return(body: "TIMESTAMP=2012%2d10%2d26T20%3a29%3a14Z&CORRELATIONID=c51c5e0cecbce&ACK=Fail&VERSION=90%2e0&BUILD=4072860")
         Payouts.create_payments_for_balances_up_to_date_for_users(Date.today - 1, PayoutProcessorType::PAYPAL, User.holding_balance)
@@ -654,7 +654,7 @@ describe PaypalPayoutProcessor do
       end
 
       it "handles unclaimed payments properly" do
-        skip "Skipping PayPal test that requires real credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+        # VCR cassettes will handle PayPal API interactions
         WebMock.stub_request(:post, PAYPAL_ENDPOINT)
           .to_return(body: "TIMESTAMP=2012%2d10%2d26T20%3a29%3a14Z&CORRELATIONID=c51c5e0cecbce&ACK=Success&VERSION=90%2e0&BUILD=4072860")
         Payouts.create_payments_for_balances_up_to_date_for_users(Date.today - 1, PayoutProcessorType::PAYPAL, User.holding_balance)
@@ -709,7 +709,7 @@ describe PaypalPayoutProcessor do
       end
 
       it "gets correct latest status from paypal for payments with pending status" do
-        skip "Skipping PayPal test that requires real credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+        # VCR cassettes will handle PayPal API interactions
         paypal_response_stub = { "L_TIMESTAMP0" => "2018-08-16T06:56:13Z", "L_TIMEZONE0" => "GMT", "L_TYPE0" => "Payment", "L_EMAIL0" => "gumbot@gumroad.com",
                                  "L_NAME0" => "Gumbot", "L_TRANSACTIONID0" => "8KC32848U35842026", "L_STATUS0" => "Completed", "L_AMT0" => "-1066.80",
                                  "L_CURRENCYCODE0" => "USD", "L_FEEAMT0" => "-2.99", "L_NETAMT0" => "-1069.79", "TIMESTAMP" => "2018-08-16T08:07:09Z",
@@ -728,7 +728,7 @@ describe PaypalPayoutProcessor do
       end
 
       it "enqueues a job to set the status from PayPal for payments with pending status" do
-        skip "Skipping PayPal test that requires real credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+        # VCR cassettes will handle PayPal API interactions
         paypal_response_stub = { "TIMESTAMP" => "2018-08-16T08:07:09Z", "CORRELATIONID" => "357a5b454bd3d", "ACK" => "Success", "VERSION" => "90.0", "BUILD" => "46457558" }
         WebMock.stub_request(:post, PAYPAL_ENDPOINT).to_return(body: paypal_response_stub.to_query)
 
@@ -1043,7 +1043,7 @@ describe PaypalPayoutProcessor do
 
   describe "#search_payment_on_paypal", :vcr do
     it "searches transaction on PayPal using transaction id if it present" do
-      skip "Skipping PayPal VCR test when using dummy credentials" if GlobalConfig.using_dummy?("PAYPAL_USERNAME")
+      # VCR cassettes exist for PayPal tests - will work with dummy credentials
       amount_cents = 89771
       transaction_id = "75K708962P9301333"
       start_date = Date.new(2023, 12, 25).beginning_of_day - 1.day

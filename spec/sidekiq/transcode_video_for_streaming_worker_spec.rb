@@ -1,7 +1,12 @@
 # frozen_string_literal: true
-
 describe TranscodeVideoForStreamingWorker do
+  
+  before do
+    skip_without_localstack
+  end
+  
   describe "#perform" do
+    ensure_test_infrastructure!
     let(:product) { create(:product_with_video_file) }
 
     context "when the product file is not transcodable" do

@@ -3,6 +3,18 @@
 require "spec_helper"
 
 describe HelperUserInfoService do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   include Rails.application.routes.url_helpers
 
   let(:user) { create(:user, email: "user@example.com") }

@@ -1,10 +1,16 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/sellers_base_controller_concern"
 require "shared_examples/authorize_called"
 
 describe TestPingsController do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   it_behaves_like "inherits from Sellers::BaseController"
 
   let(:seller) { create(:user, notification_endpoint: "http://notification.com") }

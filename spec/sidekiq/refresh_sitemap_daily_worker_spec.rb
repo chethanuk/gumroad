@@ -4,6 +4,7 @@ require "spec_helper"
 
 describe RefreshSitemapDailyWorker do
   describe "#perform" do
+    ensure_test_infrastructure!
     before do
       @product = create(:product, created_at: Time.current)
     end

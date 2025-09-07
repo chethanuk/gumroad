@@ -1,10 +1,20 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authentication_required"
 require "shared_examples/authorize_called"
 
 describe Api::Internal::AiProductDetailsGenerationsController do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   let(:seller) { create(:named_seller) }
 
   include_context "with user signed in as admin for seller"

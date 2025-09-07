@@ -51,6 +51,7 @@ describe SendWorkflowPostEmailsJob, :freeze_time do
   end
 
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     context "for different post types" do
       before do
         @products = []

@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe SellerProfile do
+  before { ensure_test_infrastructure! }
   describe "#custom_styles" do
     subject { create(:seller_profile, highlight_color: "#009a49", font: "Roboto Mono", background_color: "#000000") }
 

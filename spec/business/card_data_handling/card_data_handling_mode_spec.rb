@@ -6,7 +6,6 @@ describe CardDataHandlingMode do
   it "has the correct value for modes" do
     expect(CardDataHandlingMode::TOKENIZE_VIA_STRIPEJS).to eq "stripejs.0"
   end
-
   it "has the correct valid modes" do
     expect(CardDataHandlingMode::VALID_MODES).to include("stripejs.0")
   end

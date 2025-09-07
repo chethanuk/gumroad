@@ -72,8 +72,6 @@ describe "Collaborators", type: :system, js: true do
           end
         end
 
-
-
         it "displays details about a collaborator" do
           create(:merchant_account, user: collaborator_one.affiliate_user)
           create(:ach_account, user: collaborator_one.affiliate_user, stripe_bank_account_id: "ba_bankaccountid")

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/sellers_base_controller_concern"
 
 describe Sellers::SwitchController do

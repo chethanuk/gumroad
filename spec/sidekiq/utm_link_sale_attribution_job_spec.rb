@@ -3,6 +3,11 @@
 require "spec_helper"
 
 describe UtmLinkSaleAttributionJob do
+  before do
+    # This test only needs database, no external dependencies
+    ensure_test_infrastructure!
+  end
+  
   let(:browser_guid) { "test_browser_guid" }
   let(:seller) { create(:user) }
   let!(:product) { create(:product, user: seller) }

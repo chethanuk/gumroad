@@ -3,6 +3,10 @@
 require "spec_helper"
 
 describe UserPolicy do
+  before do
+    ensure_test_infrastructure!
+  end
+
   subject { described_class }
 
   let(:accountant_for_seller) { create(:user) }

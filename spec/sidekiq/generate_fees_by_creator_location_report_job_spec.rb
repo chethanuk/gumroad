@@ -15,6 +15,11 @@ describe GenerateFeesByCreatorLocationReportJob do
   end
 
   describe "happy case", :vcr do
+    before do
+      # Skip if using dummy AWS credentials without LocalStack
+      skip_without_localstack
+    end
+    
     let(:s3_bucket_double) do
       s3_bucket_double = double
       allow(Aws::S3::Resource).to receive_message_chain(:new, :bucket).and_return(s3_bucket_double)

@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Authentication Scenario", type: :system, js: true) do
   include FillInUserProfileHelpers
 

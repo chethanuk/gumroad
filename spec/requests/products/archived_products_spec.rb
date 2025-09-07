@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 require "shared_examples/products_navigation"
 require "shared_examples/with_sorting_and_pagination"
@@ -83,8 +84,6 @@ describe "Archived Products", type: :system, js: true do
       expect(page).to have_button("9", exact: true)
       expect(page).not_to have_button("10", exact: true)
       expect(page).to have_button("15", exact: true)
-
-
       # Page 2
       click_on "Next"
       wait_for_ajax

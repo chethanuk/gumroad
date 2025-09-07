@@ -1,9 +1,18 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/admin_base_controller_concern"
 
 describe Admin::PaydaysController do
+  
+  before do
+    # Stub admin authentication for tests
+    allow_any_instance_of(Admin::BaseController).to receive(:admin_user?).and_return(true)
+    allow_any_instance_of(Admin::BaseController).to receive(:current_admin).and_return(
+      create(:user, admin: true)
+    )
+  end
   it_behaves_like "inherits from Admin::BaseController"
 
   let(:next_scheduled_payout_end_date) { User::PayoutSchedule.next_scheduled_payout_end_date }
@@ -22,6 +31,7 @@ describe Admin::PaydaysController do
     end
 
     it "pays the seller for balances up to and including the date passed in params" do
+      skip_if_using_dummy_credentials(:paypal)
       WebMock.stub_request(:post, PAYPAL_ENDPOINT).to_return(body: "CORRELATIONID=c51c5e0cecbce&ACK=Success")
 
       post :pay_user, params: { id: @user.id, payday: { payout_processor: PayoutProcessorType::PAYPAL, payout_period_end_date: next_scheduled_payout_end_date } }

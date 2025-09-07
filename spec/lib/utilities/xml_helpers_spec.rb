@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe XmlHelpers do
   describe "text_at_xpath" do
     describe "simple xml" do

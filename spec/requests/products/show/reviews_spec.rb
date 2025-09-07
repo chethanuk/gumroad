@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product page reviews", js: true, type: :system) do
   include ActionView::Helpers::TextHelper
 
@@ -256,8 +254,6 @@ describe("Product page reviews", js: true, type: :system) do
              created_at: 1.day.ago,
              # All review responses should attribute to the seller regardless of who actually wrote it.
              user: create(:user, name: "Not the seller")
-
-
       visit product.long_url
 
       within_section "Ratings", match: :first do

@@ -3,6 +3,18 @@
 require "spec_helper"
 
 describe("Discover - Nav - Mobile", :js, :mobile_view, type: :system) do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   let(:discover_host) { UrlService.discover_domain_with_protocol }
 
   before do

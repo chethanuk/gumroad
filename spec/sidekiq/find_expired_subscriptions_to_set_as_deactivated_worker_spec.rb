@@ -4,6 +4,7 @@ require "spec_helper"
 
 describe FindExpiredSubscriptionsToSetAsDeactivatedWorker do
   describe "#perform" do
+    mock_external_service(:taxjar)
     it "queues subscriptions that should be set as deactivated" do
       subscriptions = [
         create(:subscription),

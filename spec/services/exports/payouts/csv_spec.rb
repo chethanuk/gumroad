@@ -3,6 +3,10 @@
 require "spec_helper"
 
 describe Exports::Payouts::Csv, :vcr do
+  before do
+    skip_without_vcr_cassette(:service) unless metadata[:vcr]
+  end
+
   describe "perform" do
     let!(:now) { Time.current }
     let!(:payout_date) { 1.week.ago }

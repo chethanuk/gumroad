@@ -7,6 +7,7 @@ describe Onetime::GenerateSubscribePreviews do
   let(:user_ids) { users.map(&:id) }
 
   describe "#perform" do
+    ensure_test_infrastructure!
     context "when subscribe preview generation succeeds" do
       it "attaches the generated image to the user and enables the rollout flag for the user" do
         subscribe_preview = File.binread("#{Rails.root}/spec/support/fixtures/subscribe_preview.png")

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe("Payments Settings Scenario", type: :system, js: true) do
@@ -3224,8 +3225,6 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         expect(@user.reload.active_bank_account.routing_number).to eq("AAAARWRWXXX")
       end
     end
-
-
     describe "Jordanian creator" do
       before do
         old_user_compliance_info = @user.alive_user_compliance_info
@@ -3486,8 +3485,6 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         expect(@user.reload.active_bank_account.send(:account_number_decrypted)).to eq("GI75NWBK000000007099453")
       end
     end
-
-
     describe "Botswana creator" do
       before do
         old_user_compliance_info = @user.alive_user_compliance_info
@@ -3534,8 +3531,6 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         expect(@user.reload.active_bank_account.routing_number).to eq("AAAABWBWXXX")
       end
     end
-
-
     describe "Uruguayan creator" do
       before do
         old_user_compliance_info = @user.alive_user_compliance_info

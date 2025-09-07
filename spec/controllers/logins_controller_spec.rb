@@ -1,9 +1,19 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/merge_guest_cart_with_user_cart"
 
 describe LoginsController do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   render_views
 
   before :each do

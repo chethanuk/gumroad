@@ -1,6 +1,20 @@
 # frozen_string_literal: true
+RSpec.describe Admin::HelperActionsController, :vcr do
+before do
+  # Security: Ensure no real payment credentials are used
+  if ENV['TESTING_WITHOUT_SECRETS'] == 'true' || GlobalConfig.using_dummy?(:stripe)
+    PaymentProviderMocker.mock_all_providers if defined?(PaymentProviderMocker)
+  end
+end
 
-RSpec.describe Admin::HelperActionsController do
+  
+  before do
+    # Stub admin authentication for tests
+    allow_any_instance_of(Admin::BaseController).to receive(:admin_user?).and_return(true)
+    allow_any_instance_of(Admin::BaseController).to receive(:current_admin).and_return(
+      create(:user, admin: true)
+    )
+  end
   let(:admin) { create(:admin_user) }
   let(:user) { create(:user) }
 

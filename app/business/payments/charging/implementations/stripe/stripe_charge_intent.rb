@@ -34,7 +34,12 @@ class StripeChargeIntent < ChargeIntent
       # Need to keep it for the transition phase to support webhooks in the old API version along with new.
       # The `charges` property on PaymentIntent has been replaced with `latest_charge`, in API version 2022-11-15.
       # Ref: https://stripe.com/docs/upgrades#2022-11-15
-      charge_id = payment_intent.latest_charge || payment_intent.charges.first&.id
+      # TESTING_WITHOUT_SECRETS fix: Check if method exists before calling
+      charge_id = if payment_intent.respond_to?(:latest_charge)
+                    payment_intent.latest_charge || payment_intent.charges&.first&.id
+                  else
+                    payment_intent.charges&.data&.first&.id || payment_intent.charges&.first&.id
+                  end
 
       # For PaymentIntents with capture_method = automatic we always expect a single charge
       raise "Expected a charge for payment intent #{payment_intent.id}, but got nil" unless charge_id.present?

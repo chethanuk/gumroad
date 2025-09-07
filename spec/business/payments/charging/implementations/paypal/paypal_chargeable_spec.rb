@@ -4,7 +4,6 @@ require "spec_helper"
 
 describe PaypalChargeable do
   let(:paypal_chargeable) { PaypalChargeable.new("B-38D505255T217912K", "paypal-gr-integspecs@gumroad.com", "US") }
-
   it "returns customer paypal email for #email, billing agreement id for #fingerprint, and nil #last4" do
     expect(paypal_chargeable.fingerprint).to eq("B-38D505255T217912K")
     expect(paypal_chargeable.email).to eq("paypal-gr-integspecs@gumroad.com")
@@ -28,7 +27,7 @@ describe PaypalChargeable do
     expect(reusable_token).to eq("B-38D505255T217912K")
   end
 
-  it "returns paypal for #charge_processor_id" do
+  it "returns paypal for #charge_processor_id" , :paypal_vcr , :paypal_vcr do
     expect(paypal_chargeable.charge_processor_id).to eq("paypal")
   end
 end

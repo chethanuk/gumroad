@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 describe CreateStripeApplePayDomainWorker, :vcr do
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     before do
       @user = create(:user, username: "sampleusername")
       allow(Subdomain).to receive(:from_username).and_return("sampleusername.gumroad.dev")

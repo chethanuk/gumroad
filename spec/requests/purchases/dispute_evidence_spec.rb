@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Dispute evidence page", type: :system, js: true) do
   let(:dispute) { create(:dispute_formalized, reason: Dispute::REASON_FRAUDULENT) }
   let(:dispute_evidence) { create(:dispute_evidence, dispute:) }

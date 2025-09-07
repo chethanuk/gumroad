@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe TransactionalAttributeChangeTracker do
   before do
     @model = create_mock_model

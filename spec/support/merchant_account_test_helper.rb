@@ -33,6 +33,21 @@ module MerchantAccountTestHelper
         )
       end
     end
+    
+    # Create Gumroad's Braintree merchant account if using dummy Braintree credentials
+    if ENV['BRAINTREE_API_PRIVATE_KEY']&.start_with?('dummy_')
+      braintree_processor_id = defined?(BraintreeChargeProcessor) ? BraintreeChargeProcessor.charge_processor_id : "braintree"
+      unless MerchantAccount.where(user_id: nil, charge_processor_id: braintree_processor_id).exists?
+        MerchantAccount.create!(
+          user_id: nil, # nil means it's Gumroad's account
+          charge_processor_id: braintree_processor_id,
+          charge_processor_merchant_id: ENV['BRAINTREE_MERCHANT_ACCOUNT_ID_FOR_SUPPLIERS'] || "dummy_gumroad_braintree_#{SecureRandom.hex(8)}",
+          charge_processor_alive_at: Time.current,
+          created_at: Time.current,
+          updated_at: Time.current
+        )
+      end
+    end
   end
   
   # Ensures a user has a merchant account for testing

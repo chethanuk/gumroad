@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 RSpec.describe StripeAccountSessionsController do
+  before { mock_payment_providers }
   let(:seller) { create(:named_seller) }
   let(:connected_account_id) { "acct_123" }
 

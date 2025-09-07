@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe Tip do
   describe "validations" do
     context "when value_cents is greater than 0" do

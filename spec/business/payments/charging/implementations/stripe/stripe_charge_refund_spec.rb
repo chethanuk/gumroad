@@ -5,7 +5,6 @@ require "spec_helper"
 describe StripeChargeRefund, :vcr do
   include StripeMerchantAccountHelper
   include StripeChargesHelper
-
   let(:currency) { Currency::USD }
 
   let(:amount_cents) { 1_00 }

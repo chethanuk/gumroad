@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authentication_required"
 
 describe Api::Internal::Collaborators::IncomingsController do
@@ -42,8 +43,6 @@ describe Api::Internal::Collaborators::IncomingsController do
       affiliate_user: seller2
     )
   end
-
-
   describe "GET index" do
     before { sign_in invited_user }
 

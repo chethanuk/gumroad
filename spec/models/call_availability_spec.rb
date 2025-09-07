@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe CallAvailability do
   describe "normalizations" do
     it "drops sub-minute precision from start_time and end_time when assigning" do

@@ -3,6 +3,11 @@
 require "spec_helper"
 
 describe Iffy::Post::IngestService do
+  
+  before do
+    # Stub external HTTP requests
+    WebMock.stub_request(:any, /external-api.com/).to_return(status: 200, body: '{}')
+  end
   let(:user) { create(:user) }
   let!(:merchant_account) { create(:merchant_account, user: user) }
   let(:installment) { create(:installment, seller: user, name: "Test Post", message: "<p>A test post message.</p>") }

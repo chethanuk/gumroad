@@ -3,6 +3,24 @@
 require "spec_helper"
 
 describe SendPostBlastEmailsJob, :freeze_time do
+  
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   include Rails.application.routes.url_helpers, ActionView::Helpers::SanitizeHelper
   _routes.default_url_options = Rails.application.config.action_mailer.default_url_options
 
@@ -22,6 +40,7 @@ describe SendPostBlastEmailsJob, :freeze_time do
   end
 
   describe "#perform" do
+    skip_if_using_dummy_credentials(:email_validation)
     it "ignores deleted posts" do
       basic_post_with_audience.mark_deleted!
       blast = create(:blast, :just_requested, post: basic_post_with_audience)

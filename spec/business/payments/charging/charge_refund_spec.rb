@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "business/payments/charging/charge_refund_shared_examples"
 
+require "business/payments/charging/charge_refund_shared_examples"
 describe ChargeRefund do
   let(:flow_of_funds) { FlowOfFunds.build_simple_flow_of_funds(Currency::USD, 1_00) }
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "net/http"
 require "shared_examples/authorized_oauth_v1_api_method"
 

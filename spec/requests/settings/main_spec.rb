@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe("Main Settings Scenario", type: :system, js: true) do
@@ -111,8 +112,6 @@ describe("Main Settings Scenario", type: :system, js: true) do
       expect(user.purchasing_power_parity_enabled).to eq(true)
       expect(user.purchasing_power_parity_limit).to eq(50)
       expect(user.purchasing_power_parity_payment_verification_disabled).to eq(false)
-
-
       visit settings_main_path
       expect(page).to have_checked_field("Enable purchasing power parity")
       fill_in "Maximum PPP discount", with: ""

@@ -1,10 +1,23 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 require "shared_examples/discover_layout"
 
 describe("ProductShowScenario", type: :system, js: true) do
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   it("sets the quantity and price based on the parameters in the query string and allows purchase") do
     product = create(:product, customizable_price: true, quantity_enabled: true)
     quantity = 3

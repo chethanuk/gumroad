@@ -4,7 +4,6 @@ require "spec_helper"
 
 describe BraintreeChargeIntent do
   let(:braintree_charge) { double }
-
   subject (:braintree_charge_intent) { described_class.new(charge: braintree_charge) }
 
   describe "#succeeded?" do
@@ -20,7 +19,7 @@ describe BraintreeChargeIntent do
   end
 
   describe "#charge" do
-    it "returns the charge object it was initialized with" do
+    it "returns the charge object it was initialized with" , :braintree_vcr , :braintree_vcr do
       expect(braintree_charge_intent.charge).to eq(braintree_charge)
     end
   end

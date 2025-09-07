@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe "/follow page", type: :system, js: true do
   before do
     @email = generate(:email)

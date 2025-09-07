@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 require "shared_examples/creator_dashboard_page"
 
@@ -593,8 +594,6 @@ describe("Checkout upsells page", type: :system, js: true) do
     click_on "Delete"
     expect(page).to have_alert(text: "Successfully deleted upsell!")
     expect(page).to_not have_selector(:table_row, { "Upsell" => "Upsell 1" })
-
-
     visit checkout_upsells_path
     expect(page).to_not have_selector(:table_row, { "Upsell" => "Upsell 1" })
 

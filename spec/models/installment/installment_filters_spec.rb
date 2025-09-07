@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/with_filtering_support"
 
 describe "InstallmentFilters"  do

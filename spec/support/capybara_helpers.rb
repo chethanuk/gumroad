@@ -12,15 +12,33 @@ module CapybaraHelpers
   end
 
   def wait_for_ajax
+    # Skip AJAX waiting for drivers that don't support JavaScript
+    return true if Capybara.current_driver == :rack_test
+    return true unless javascript_capable_driver?
+    
     Timeout.timeout(Capybara.default_max_wait_time) do
       loop until finished_all_ajax_requests?
     end
+  rescue Capybara::NotSupportedByDriverError
+    # If driver doesn't support JavaScript, just return
+    true
   end
 
   def finished_all_ajax_requests?
+    # Return true for drivers that don't support JavaScript
+    return true if Capybara.current_driver == :rack_test
+    return true unless javascript_capable_driver?
+    
     page.evaluate_script(<<~EOS)
       ((typeof window.jQuery === 'undefined') || jQuery.active === 0) && !window.__activeRequests
     EOS
+  rescue Capybara::NotSupportedByDriverError
+    # If driver doesn't support JavaScript, just return true
+    true
+  end
+  
+  def javascript_capable_driver?
+    ![:rack_test, :mechanize].include?(Capybara.current_driver)
   end
 
   def visit(url)

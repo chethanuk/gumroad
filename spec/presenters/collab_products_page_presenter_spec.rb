@@ -3,6 +3,10 @@
 require "spec_helper"
 
 describe CollabProductsPagePresenter, :vcr do
+  before do
+    ensure_test_infrastructure!
+  end
+
   include Rails.application.routes.url_helpers
 
   # User is a collaborator for two other sellers

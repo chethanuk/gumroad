@@ -3,6 +3,15 @@
 require "spec_helper"
 
 RSpec.describe TipOptionsService, type: :service do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   describe ".get_tip_options" do
     context "when Redis has valid tip options" do
       before do

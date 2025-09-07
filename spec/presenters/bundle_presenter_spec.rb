@@ -1,6 +1,11 @@
+
 # frozen_string_literal: true
 
 describe BundlePresenter do
+  before do
+    ensure_test_infrastructure!
+  end
+
   include Rails.application.routes.url_helpers
 
   describe "#bundle_props" do

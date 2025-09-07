@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-
 describe HandleGrmcCallbackJob do
   let(:product_file) { create(:product_file) }
   let(:transcoded_video) { create(:transcoded_video, job_id: "test_job_id", streamable: product_file, transcoded_video_key: "/attachments/68756f28973n28347/hls/", state: :processing) }
 
   describe "#perform" do
+    ensure_test_infrastructure!
     context "when notification status is 'success'" do
       let(:notification) { { "job_id" => transcoded_video.job_id, "status" => "success" } }
 

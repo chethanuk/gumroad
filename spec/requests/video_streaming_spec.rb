@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe "Video stream scenario", type: :system, js: true do
   before do
     @url_redirect = create(:streamable_url_redirect)

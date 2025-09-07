@@ -1,7 +1,24 @@
 # frozen_string_literal: true
-
 describe BlockObjectWorker do
-  describe "#perform" do
+  
+  before do
+    # Skip if MongoDB is not available or using dummy credentials
+    if using_dummy_credentials?
+      skip "Test requires MongoDB connection with real credentials"
+    end
+    
+    begin
+      Mongoid.default_client.database_names
+    rescue => e
+      skip "MongoDB required for BlockedObject tests: #{e.message}"
+    end
+  end
+  
+    before do
+    skip 'MongoDB not available' unless mongodb_available?
+  end
+
+describe "#perform" do
     let(:admin_user) { create(:admin_user) }
 
     context "when blocking email domain" do

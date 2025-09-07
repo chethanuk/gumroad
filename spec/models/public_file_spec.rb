@@ -3,6 +3,7 @@
 require "spec_helper"
 
 describe PublicFile do
+  before { ensure_test_infrastructure! }
   describe "associations" do
     it { is_expected.to belong_to(:seller).class_name("User").optional }
     it { is_expected.to belong_to(:resource).optional(false) }

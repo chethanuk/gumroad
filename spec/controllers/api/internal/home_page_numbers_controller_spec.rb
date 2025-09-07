@@ -3,6 +3,15 @@
 require "spec_helper"
 
 describe Api::Internal::HomePageNumbersController do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   context "when the return value is cached" do
     let(:cached_value) do
       {

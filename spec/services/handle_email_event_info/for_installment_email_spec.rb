@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe HandleEmailEventInfo::ForInstallmentEmail do
   before do
     @installment = create(:installment)

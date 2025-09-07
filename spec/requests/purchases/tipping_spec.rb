@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product checkout with tipping", type: :system, js: true) do
   let(:seller) { create(:named_seller, :eligible_for_service_products, tipping_enabled: true) }
 

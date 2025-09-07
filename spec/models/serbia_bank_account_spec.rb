@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe SerbiaBankAccount do
   describe "#bank_account_type" do
     it "returns Serbia" do

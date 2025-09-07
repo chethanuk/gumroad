@@ -2,7 +2,14 @@
 
 require "spec_helper"
 
-RSpec.describe AudienceMember, :freeze_time do
+RSpec.describe AudienceMember, :freeze_time, :vcr do
+before do
+  # Security: Ensure no real payment credentials are used
+  if ENV['TESTING_WITHOUT_SECRETS'] == 'true' || GlobalConfig.using_dummy?(:stripe)
+    PaymentProviderMocker.mock_all_providers if defined?(PaymentProviderMocker)
+  end
+end
+
   describe "validations" do
     it "validates json schema" do
       member = build(:audience_member, details: { "foo" => "bar" })

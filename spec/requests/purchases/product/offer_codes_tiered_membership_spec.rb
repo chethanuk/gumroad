@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Offer-code usage from product page for tiered membership", type: :system, js: true) do
   let(:product) { create(:membership_product_with_preset_tiered_pricing, user: create(:user, display_offer_code_field: true)) }
   let!(:offer_code) { create(:offer_code, products: [product], amount_cents: 4_00) }

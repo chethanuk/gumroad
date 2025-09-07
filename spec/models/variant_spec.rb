@@ -1,9 +1,34 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/max_purchase_count_concern"
 
 describe Variant do
+  
+  
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
+  before(:all) do
+    # Ensure Elasticsearch indices exist
+    [Purchase, Product, Balance].each do |model|
+      next unless model.respond_to?(:__elasticsearch__)
+      begin
+        model.__elasticsearch__.create_index! force: true
+      rescue => e
+        Rails.logger.warn "Failed to create Elasticsearch index: #{e.message}"
+      end
+    end
+  end
   it_behaves_like "MaxPurchaseCount concern", :variant
 
   describe "lifecycle hooks" do
@@ -648,8 +673,6 @@ describe Variant do
         it "does not include deleted price details for other recurrences" do
           create(:price, link: @variant.link, recurrence: "monthly", deleted_at: 1.day.ago)
           create(:variant_price, variant: @variant, recurrence: "monthly")
-
-
           result = @variant.recurrence_price_values(subscription_attrs: {
                                                       recurrence: @subscription.recurrence,
                                                       variants: @subscription.original_purchase.variant_attributes,

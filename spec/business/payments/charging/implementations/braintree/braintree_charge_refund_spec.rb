@@ -3,15 +3,13 @@
 require "spec_helper"
 
 describe BraintreeChargeRefund, :vcr do
-  before(:all) do
-    skip "Skipping Braintree VCR tests when using dummy credentials" if GlobalConfig.using_dummy?("BRAINTREE_API_PRIVATE_KEY")
-  end
+  # VCR cassettes exist - tests will use recorded responses
+  # Available: 2 cassettes in spec/support/fixtures/vcr_cassettes/BraintreeChargeRefund/
   let(:braintree_chargeable) do
     chargeable = BraintreeChargeableNonce.new(Braintree::Test::Nonce::PayPalFuturePayment, nil)
     chargeable.prepare!
     Chargeable.new([chargeable])
   end
-
   let(:braintree_charge) do
     params = {
       merchant_account_id: BRAINTREE_MERCHANT_ACCOUNT_ID_FOR_SUPPLIERS,

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 describe UserCustomDomainRequestService do
   describe "#valid?" do
     let(:request) { double("request") }

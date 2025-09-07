@@ -3,6 +3,15 @@
 require "spec_helper"
 
 RSpec.describe Onetime::RevertToProductLevelRefundPolicies do
+  
+  before do
+    # Ensure Redis is available
+    begin
+      Redis.new(url: ENV['REDIS_HOST']).ping
+    rescue => e
+      skip "Redis not available: #{e.message}"
+    end
+  end
   describe ".reset_last_processed_id" do
     before do
       $redis.set(described_class::LAST_PROCESSED_ID_KEY, 123)

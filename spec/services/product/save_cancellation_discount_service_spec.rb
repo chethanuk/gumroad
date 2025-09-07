@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 RSpec.describe Product::SaveCancellationDiscountService do
   let(:product) { create(:membership_product_with_preset_tiered_pricing) }
   let(:service) { described_class.new(product, cancellation_discount_params) }

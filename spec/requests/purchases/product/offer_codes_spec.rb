@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Offer-code usage from product page", type: :system, js: true) do
   it "accepts an offer code that's larger than the price of the product" do
     product = create(:product, price_cents: 300)

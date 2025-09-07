@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-
 describe PaypalMerchantAccountManager, :vcr do
+  before { mock_payment_providers if using_dummy_credentials? }
   describe "#create_partner_referral" do
     let(:user) { create(:user) }
 

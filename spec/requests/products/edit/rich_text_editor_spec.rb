@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe("Product Edit Rich Text Editor", type: :system, js: true) do
@@ -811,8 +812,6 @@ describe("Product Edit Rich Text Editor", type: :system, js: true) do
       # Trigger an update
       rich_text_editor_select_all find("[aria-label='Content editor']")
       save_change
-
-
       expect(@product.reload.rich_contents.alive.flat_map(&:description)).to eq(
         [
           {

@@ -119,8 +119,6 @@ describe User::MoneyBalance do
       expect(@user.unpaid_balance_cents_up_to_date_held_by_gumroad(3.days.ago)).to eq(0)
     end
   end
-
-
   describe "#unpaid_balance_holding_cents_up_to_date_held_by_stripe" do
     let(:stripe_connect_merchant_account) { create(:merchant_account, user: @user, currency: "aud") }
 

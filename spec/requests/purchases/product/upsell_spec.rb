@@ -1,7 +1,5 @@
+
 # frozen_string_literal: true
-
-require("spec_helper")
-
 describe("Product checkout with upsells", type: :system, js: true) do
   let(:seller) { create(:named_seller) }
 
@@ -120,8 +118,6 @@ describe("Product checkout with upsells", type: :system, js: true) do
         expect(cross_sell_purchase.offer_code).to eq(cross_sell.offer_code)
         expect(cross_sell_purchase.price_cents).to eq(480)
         expect(cross_sell_purchase.tip.value_cents).to eq(80)
-
-
         purchase = Purchase.second_to_last
         expect(purchase.link).to eq(selected_product)
         expect(purchase.price_cents).to eq(120)

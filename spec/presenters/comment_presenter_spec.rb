@@ -1,3 +1,4 @@
+
 # frozen_string_literal: true
 
 describe CommentPresenter do
@@ -97,8 +98,6 @@ describe CommentPresenter do
     context "when signed in user is neither the commenter nor the author of the post" do
       let(:other_user) { create(:user) }
       let(:pundit_user) { SellerContext.new(user: other_user, seller: other_user) }
-
-
       it "returns comment details with 'is_deletable' set to false" do
         expect(presenter.comment_component_props[:is_deletable]).to eq(false)
       end

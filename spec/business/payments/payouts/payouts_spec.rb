@@ -1,7 +1,4 @@
 # frozen_string_literal: true
-
-require "spec_helper"
-
 describe Payouts do
   describe "is_user_payable" do
     let(:payout_date) { Date.today - 1 }

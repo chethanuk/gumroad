@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+
 require "shared_examples/authorize_called"
 
 describe PaypalController, :vcr do
+  before { mock_payment_providers }
   include AffiliateCookie
 
   let(:window_location) { "https://127.0.0.1:3000/l/test?wanted=true" }

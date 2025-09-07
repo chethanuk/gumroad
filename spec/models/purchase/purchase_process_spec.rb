@@ -595,8 +595,6 @@ describe "Purchase Process", :vcr do
       end
     end
 
-
-
     describe "multi-quantity purchase" do
       before do
         @product = create(:physical_product, price_cents: 500, max_purchase_count: 10)

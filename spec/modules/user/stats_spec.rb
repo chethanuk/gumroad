@@ -180,8 +180,6 @@ describe User::Stats, :vcr do
         affiliate_credits_balances = @user.affiliate_credit_cents_for_balances(balance_ids)
         expect(affiliate_credits_balances).to eq 196
       end
-
-
       it "calculates the affiliate fees correctly for the given balances which include a chargeback of an old sale" do
         purchase = Purchase.last
         purchase.stripe_transaction_id = "ch_zitkxbhds3zqlt"
