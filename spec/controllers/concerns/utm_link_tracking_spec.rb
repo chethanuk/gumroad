@@ -18,6 +18,9 @@ describe UtmLinkTracking, type: :controller do
 
     cookies[:_gumroad_guid] = "abc123"
     request.remote_ip = "192.168.0.1"
+    
+    # Stub GeoIP to return nil for private IP addresses
+    stub_geoip("192.168.0.1", nil)
 
     Feature.activate_user(:utm_links, seller)
   end

@@ -57,7 +57,8 @@ describe("Product Page - Shipping Scenarios", type: :system, js: true, shipping:
     product.shipping_destinations << build(:shipping_destination, country_code: "IT", one_item_rate_cents: 15_00, multiple_items_rate_cents: 15_00)
     product.save!
 
-    allow_any_instance_of(ActionDispatch::Request).to receive(:remote_ip).and_return("72.229.28.185") # US
+    # Use GeoIP helper for US
+    stub_request_ip("72.229.28.185", "US", "United States")
 
     visit "/l/#{product.unique_permalink}"
     add_to_cart(product)
@@ -65,7 +66,8 @@ describe("Product Page - Shipping Scenarios", type: :system, js: true, shipping:
     expect(page).to have_field("Country", with: "US")
     expect(page).to have_text("Shipping rate US$10", normalize_ws: true)
 
-    allow_any_instance_of(ActionDispatch::Request).to receive(:remote_ip).and_return("2.47.255.255") # Italy
+    # Use GeoIP helper for Italy
+    stub_request_ip("2.47.255.255", "IT", "Italy")
 
     visit current_path
 

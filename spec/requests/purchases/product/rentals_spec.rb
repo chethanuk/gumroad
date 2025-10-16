@@ -109,7 +109,8 @@ describe("Rentals from product page", type: :system, js: true) do
 
     describe "rentals and vat" do
       before do
-        allow_any_instance_of(ActionDispatch::Request).to receive(:remote_ip).and_return("2.47.255.255") # Italy
+        # Use the new GeoIP helper for Italy
+        stub_request_ip("2.47.255.255", "IT", "Italy")
         allow_any_instance_of(Chargeable).to receive(:country) { "IT" }
 
         create(:zip_tax_rate, country: "IT", zip_code: nil, state: nil, combined_rate: 0.22, is_seller_responsible: false)

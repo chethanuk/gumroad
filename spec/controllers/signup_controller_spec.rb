@@ -175,6 +175,8 @@ describe SignupController do
 
     it "turns notifications off the user if the user is from Canada" do
       @request.env["REMOTE_ADDR"] = "76.66.210.142"
+      # Stub GeoIP to return Canadian data for this IP
+      stub_geoip("76.66.210.142", :canada)
       user = build(:user, password: "password")
       post "create", params: { user: { email: user.email, password: "password" } }
       last_user = User.last

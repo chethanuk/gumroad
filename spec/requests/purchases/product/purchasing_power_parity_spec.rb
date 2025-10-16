@@ -6,7 +6,8 @@ describe "Purchasing power parity", type: :system, js: true do
     @product = create(:product, price_cents: 999, user: @user)
     @membership = create(:membership_product_with_preset_tiered_pricing, user: @user)
     PurchasingPowerParityService.new.set_factor("LV", 0.49)
-    allow_any_instance_of(ActionDispatch::Request).to receive(:remote_ip).and_return("109.110.31.255")
+    # Use GeoIP helper for Latvia
+    stub_request_ip("109.110.31.255", "LV", "Latvia")
   end
 
   describe "classic product" do

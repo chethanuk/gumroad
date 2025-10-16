@@ -17,9 +17,8 @@ describe CheckoutPresenter do
         end
       end
       
-      # Stub GeoIp lookup for test environment
-      geo_stub = double(country_name: "United States", region_name: "California")
-      allow(GeoIp).to receive(:lookup).and_return(geo_stub)
+      # Use the new GeoIP helper with custom region name for California
+      stub_geoip("104.193.168.19", region_name: "California")
       
       @instance = described_class.new(logged_in_user: @user, ip: "104.193.168.19")
 
